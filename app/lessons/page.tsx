@@ -1,5 +1,4 @@
 "use client"
-
 import React, { ReactNode } from "react"
 import dayjs from "dayjs"
 import ProtectedRoute from "@/components/auth/ProtectedRoute"
@@ -15,6 +14,9 @@ import isDateBeforeToday from "@/components/helpers/isDateBeforeToday"
 import LoadingPage from "@/components/LoadingPage"
 import { LessonTimetableType } from "@/types/types"
 import groupLessonsByWeek from "@/components/helpers/getWeekRange"
+
+import dynamic from "next/dynamic"
+const Recorder = dynamic(() => import("@/components/Chat/RecordAudio"), { ssr: false })
 
 function index() {
 	const { apiRequest } = ApiServices()
@@ -38,7 +40,10 @@ function index() {
 	return (
 		<ProtectedRoute permitArray={["admin", "teacher", "student"]}>
 			<SidebarContainer>
-				<Box sx={{ marginTop: "20px", width: "100%" }}>
+				<Box
+					//@ts-ignore
+					sx={{ marginTop: "20px", width: "100%" }}
+				>
 					<Grid item xs={12} sm={12} sx={{ marginTop: "20px" }}>
 						<Box
 							sx={{
@@ -48,6 +53,7 @@ function index() {
 								width: "100%",
 							}}
 						>
+							<Recorder />
 							<Typography
 								sx={{
 									margin: "0px 10px 10px 0px",

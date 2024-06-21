@@ -33,7 +33,9 @@ const UseAudioRecorder = () => {
 						body: JSON.stringify({ filePath: myFilePath }),
 					})
 				}
+
 				const blob = await recorder.stopRecording()
+				console.log("blob :>> ", blob)
 				const { data } = await axios.post("/api/save-audio", blob)
 
 				if (data.filePath) {

@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 					content: `Translate the following text to ${targetLanguage}: ${text}`,
 				},
 			],
-			model: "gpt-3.5-turbo",
+			model: "gpt-4o-mini",
 			temperature: 0.2,
 			max_tokens: 200,
 		})

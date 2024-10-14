@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 					content: `Provide one suggestion for the next response based on the conversation: ${prompt}. Suggestion should be an example, so the user could respond to the question.`,
 				},
 			],
-			model: "gpt-4o",
+			model: "gpt-4o-mini",
 			temperature: 0.7,
 			max_tokens: 200,
 		})

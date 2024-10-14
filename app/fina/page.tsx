@@ -67,7 +67,7 @@ export default function Fina(props: any) {
 		setLoading(true)
 		try {
 			const response = await OpenAiFina({
-				model: "gpt-3.5-turbo",
+				model: "gpt-4o-mini",
 				messages: messagesArray,
 				temperature: 0.9,
 				max_tokens: 200,

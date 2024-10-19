@@ -46,6 +46,7 @@ const AccountMenu = React.memo(({ isSmallScreen }: { isSmallScreen: boolean }) =
 	return (
 		<>
 			<Box
+				//@ts-ignore
 				display="flex"
 				alignItems="center"
 				textAlign="center"

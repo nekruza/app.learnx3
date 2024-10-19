@@ -67,7 +67,7 @@ export default function StudentForm() {
 			phone: phone,
 			country: country,
 			role: "student",
-			permit: false,
+			permit: true,
 			performance: "Doing ok",
 			eng_level_form: eng_level_form as any,
 			eng_level_test: "",
@@ -279,9 +279,9 @@ export default function StudentForm() {
 							type="submit"
 							fullWidth
 							variant="contained"
-							sx={{ mt: 4, mb: 2, background: "linear-gradient(45deg, rgb(139, 88, 254), rgb(95, 222, 231))" }}
+							sx={{ mt: 4, mb: 2, background: "linear-gradient(45deg, rgb(139, 88, 254), rgb(95, 222, 231))", fontWeight: "bold" }}
 						>
-							🏁 Save
+							Save
 						</Button>
 					</Box>
 					<Grid item xs={12}>

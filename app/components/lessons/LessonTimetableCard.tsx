@@ -37,7 +37,7 @@ const LessonTimetableCard = memo(({ lesson }: { lesson: LessonTimetableType }) =
 				//@ts-ignore
 				sx={{
 					...BoxStyle,
-					background: lesson?.lesson_type === "speaking_club" ? brandColors.tooLightPurple : brandColors.lighterGrey,
+					background: brandColors.lighterGrey,
 				}}
 			>
 				<Box

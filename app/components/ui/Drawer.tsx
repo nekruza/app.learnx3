@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Fina from '@/fina/page';
 import FinaAvatar from '../fina/FinaAvatar';
+import Fina from '@/fina/Fina';
 
 
 export default function DrawerComponent() {

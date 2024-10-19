@@ -56,7 +56,7 @@ const AccountMenu = React.memo(({ isSmallScreen }: { isSmallScreen: boolean }) =
 					<IconButton
 						onClick={handleClick}
 						size="small"
-						sx={{ ml: { xs: "0px", sm: 2 } }}
+						sx={{ ml: { xs: "0px" } }}
 						aria-controls={open ? "account-menu" : undefined}
 						aria-haspopup="true"
 						aria-expanded={open ? "true" : undefined}

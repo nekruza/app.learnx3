@@ -45,7 +45,7 @@ const Navbar = () => {
 					</Typography>
 				</Box>
 				<Box display="flex" alignItems="center">
-					<Box display="flex" alignItems="center" justifyContent="start" width="100%" gap={1}>
+					<Box display="flex" alignItems="center" justifyContent="start" width="100%">
 						{userInfo.role === "admin" && (
 							<Link href="/home/admin" passHref>
 								<Button
@@ -68,7 +68,7 @@ const Navbar = () => {
 						<Typography variant="body2" sx={TypographyStyle}>
 							⭐️ {getStudentTotalScore}
 						</Typography>
-						<Box display={["none", "flex"]} alignItems="center">
+						<Box display={["none", "flex"]} ml={1} alignItems="center">
 							{((userInfo?.role === "student" && !userInfo?.paid) || userInfo?.role === "admin") && (
 								<PricingModal buttonText="Upgrade to Pro" />
 							)}

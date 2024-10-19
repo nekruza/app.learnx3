@@ -46,11 +46,9 @@ const AccountMenu = React.memo(({ isSmallScreen }: { isSmallScreen: boolean }) =
 	return (
 		<>
 			<Box
-				sx={{
-					display: "flex",
-					alignItems: "center",
-					textAlign: "center",
-				}}
+				display="flex"
+				alignItems="center"
+				textAlign="center"
 			>
 				<Tooltip title="Account settings">
 					<IconButton

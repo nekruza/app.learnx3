@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { Box, Typography, Button, Grid, Card } from '@mui/material';
+import { Box, Typography, Grid, Card } from '@mui/material';
 import { brandColors } from '@/components/utils/brandColors';
 import ButtonX from '../ui/ButtonX';
 
@@ -13,6 +13,7 @@ function UpgradeToPro({ onClose }: { onClose: () => void }) {
 
   return (
     <Box
+      //@ts-ignore
       maxWidth={800}
       sx={{
         background: "white",
@@ -29,7 +30,7 @@ function UpgradeToPro({ onClose }: { onClose: () => void }) {
       alignItems="center"
     >
 
-      <Typography variant="h8" fontWeight="bold" textAlign={["center"]} sx={{
+      <Typography fontSize={["20px", "22px"]} fontWeight="bold" textAlign={["center"]} sx={{
         color: brandColors.lightPurple,
         m: "auto"
       }}>
@@ -100,7 +101,16 @@ function PaymentForm({ onClose }: { onClose: () => void }) {
         </Typography>
 
         <Box display="flex" flexDirection={["column", "row"]} gap={2} justifyContent="center">
-          <Typography variant="body1" gutterBottom textAlign="center" mb={2} p={1} borderRadius={1} fontWeight="bold" backgroundColor={brandColors.lightPurple} color="white" padding={"10px 20px"}>
+          <Typography variant="body1" gutterBottom sx={{
+            textAlign: "center",
+            mb: 2,
+            p: 1,
+            borderRadius: 1,
+            fontWeight: "bold",
+            backgroundColor: brandColors.lightPurple,
+            color: "white",
+            padding: "10px 20px"
+          }}>
             📱 WhatsApp Number: +44 7708582724
           </Typography>
         </Box>

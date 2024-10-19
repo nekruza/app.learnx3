@@ -8,6 +8,7 @@ import { useMemo } from "react"
 import ApiServices from "../api/ApiServices"
 import { brandColors } from "./utils/brandColors"
 import Link from "next/link"
+import PricingModal from "./pricing/PricingModal"
 
 const Navbar = () => {
 	const theme = useTheme()
@@ -44,7 +45,7 @@ const Navbar = () => {
 					</Typography>
 				</Box>
 				<Box display="flex" alignItems="center">
-					<Box display="flex" alignItems="center" justifyContent="start" width="100%">
+					<Box display="flex" alignItems="center" justifyContent="start" width="100%" gap={1}>
 						{userInfo.role === "admin" && (
 							<Link href="/home/admin" passHref>
 								<Button
@@ -67,6 +68,9 @@ const Navbar = () => {
 						<Typography variant="body2" sx={TypographyStyle}>
 							⭐️ {getStudentTotalScore}
 						</Typography>
+						{(userInfo?.role === "student" || userInfo?.role === "admin") && (
+							<PricingModal buttonText="Upgrade to Pro" />
+						)}
 					</Box>
 
 					<AccountMenu isSmallScreen={isSmallScreen} />

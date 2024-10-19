@@ -1,68 +1,61 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Button, Grid, Card } from '@mui/material';
 import { brandColors } from '@/components/utils/brandColors';
+import ButtonX from '../ui/ButtonX';
 
-function UpgradeToPro() {
+function UpgradeToPro({ onClose }: { onClose: () => void }) {
+
+  const [showPayment, setShowPayment] = useState(false);
+
+  if (showPayment) {
+    return <PaymentForm onClose={() => setShowPayment(false)} />
+  }
 
   return (
     <Box
+      maxWidth={800}
       sx={{
-        height: '100vh',
-        overflow: 'auto',
-        backgroundImage: `url(/bg1.jpg)`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        background: "white",
+        gap: 2
       }}
+      m="auto"
+      p={["20px", "30px 40px"]}
+      boxShadow='0 2px 17px rgba(0,0,0,.08)'
+      border='.5px solid #ebeeff'
+      borderRadius='10px'
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
     >
-      <Box
-        maxWidth={800}
-        sx={{
-          background: "white",
-          gap: 2
-        }}
-        m="auto"
-        p={["20px", "30px 40px"]}
-        boxShadow='0 2px 17px rgba(0,0,0,.08)'
-        border='.5px solid #ebeeff'
-        borderRadius='10px'
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-      >
 
-        <Typography variant="h8" fontWeight="bold" textAlign={["center", "left"]} sx={{
-          color: brandColors.lightPurple,
-          m: "auto"
-        }}>
-          Pricing
-        </Typography>
-        <Typography variant="h4" fontWeight="bold" textAlign={["center", "left"]}>
-          Select your plan and start speaking!
-        </Typography>
-        <Typography variant="subtitle1" textAlign={["center", "left"]} mb={2}>
-          100% of profit goes to supporting education of disadvantaged people
-        </Typography>
+      <Typography variant="h8" fontWeight="bold" textAlign={["center", "left"]} sx={{
+        color: brandColors.lightPurple,
+        m: "auto"
+      }}>
+        Pricing
+      </Typography>
+      <Typography variant="h4" fontWeight="bold" textAlign={["center", "left"]}>
+        Select your plan and start speaking!
+      </Typography>
+      <Typography variant="subtitle1" textAlign={["center", "left"]} mb={2}>
+        100% of profit goes to supporting education of disadvantaged people
+      </Typography>
 
-        <Grid container spacing={4}>
-          {PricingData.map((plan, index) => (
-            <Grid item xs={12} md={6} key={index}>
-              <PricingCard {...plan} />
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    </Box >
+      <Grid container spacing={4}>
+        {PricingData.map((plan, index) => (
+          <Grid item xs={12} md={6} key={index}>
+            <PricingCard {...plan} onClose={onClose} setShowPayment={setShowPayment} />
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 }
 
-function PricingCard({ title, subtitle, price, period, buttonText, features }: any) {
-  const isPro = title === "Professional";
+function PricingCard({ title, subtitle, price, period, buttonText, features, onClose, setShowPayment }: any) {
+  const isPro = title === "Pro";
 
   return (
     <Card variant="outlined" sx={{
@@ -87,27 +80,34 @@ function PricingCard({ title, subtitle, price, period, buttonText, features }: a
             </Typography>
           ))}
         </Box>
-        <Button
-          variant={isPro ? "contained" : "outlined"}
-          color={isPro ? "primary" : "inherit"}
-          fullWidth
-          sx={{
-            mb: 2,
-            background: "linear-gradient(45deg, rgb(139, 88, 254), rgb(95, 222, 231))",
-            color: 'white',
-            fontWeight: 600,
-            transition: "transform 0.3s ease-in-out",
-            '&:hover': {
-              transform: "scale(1.02)",
-              boxShadow: "0 4px 17px rgba(0,0,0,.08)",
-            }
-          }}
-        >
-          {buttonText}
-        </Button>
+        <ButtonX
+          text={buttonText}
+          onClick={isPro ? () => setShowPayment(true) : onClose}
+          style={{ width: "100%" }}
+        />
       </Box>
     </Card>
   );
+}
+
+function PaymentForm({ onClose }: { onClose: () => void }) {
+  return (
+    <Box maxWidth={600} m="auto" p={["20px", "30px 40px"]} boxShadow='0 2px 17px rgba(0,0,0,.08)' border='.5px solid #ebeeff' borderRadius='10px' display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+
+      <Typography variant="h5" fontWeight="bold" gutterBottom textAlign="center">Upgrade to Pro</Typography>
+      <Box sx={{ mt: 2, }}>
+        <Typography variant="body1" gutterBottom textAlign="center" mb={3}>
+          To upgrade to Pro, please contact us via WhatsApp:
+        </Typography>
+
+        <Box display="flex" flexDirection={["column", "row"]} gap={2} justifyContent="center">
+          <Typography variant="body1" gutterBottom textAlign="center" mb={2} p={1} borderRadius={1} fontWeight="bold" backgroundColor={brandColors.lightPurple} color="white" padding={"10px 20px"}>
+            📱 WhatsApp Number: +44 7708582724
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  )
 }
 
 const PricingData = [

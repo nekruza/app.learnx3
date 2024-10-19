@@ -68,9 +68,11 @@ const Navbar = () => {
 						<Typography variant="body2" sx={TypographyStyle}>
 							⭐️ {getStudentTotalScore}
 						</Typography>
-						{(userInfo?.role === "student" || userInfo?.role === "admin") && (
-							<PricingModal buttonText="Upgrade to Pro" />
-						)}
+						<Box display={["none", "flex"]} alignItems="center">
+							{((userInfo?.role === "student" && !userInfo?.paid) || userInfo?.role === "admin") && (
+								<PricingModal buttonText="Upgrade to Pro" />
+							)}
+						</Box>
 					</Box>
 
 					<AccountMenu isSmallScreen={isSmallScreen} />

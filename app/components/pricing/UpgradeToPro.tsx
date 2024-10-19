@@ -5,7 +5,6 @@ import { brandColors } from '@/components/utils/brandColors';
 import ButtonX from '../ui/ButtonX';
 
 function UpgradeToPro({ onClose }: { onClose: () => void }) {
-
   const [showPayment, setShowPayment] = useState(false);
 
   if (showPayment) {
@@ -17,7 +16,7 @@ function UpgradeToPro({ onClose }: { onClose: () => void }) {
       maxWidth={800}
       sx={{
         background: "white",
-        gap: 2
+        gap: 1
       }}
       m="auto"
       p={["20px", "30px 40px"]}
@@ -30,16 +29,16 @@ function UpgradeToPro({ onClose }: { onClose: () => void }) {
       alignItems="center"
     >
 
-      <Typography variant="h8" fontWeight="bold" textAlign={["center", "left"]} sx={{
+      <Typography variant="h8" fontWeight="bold" textAlign={["center"]} sx={{
         color: brandColors.lightPurple,
         m: "auto"
       }}>
         Pricing
       </Typography>
-      <Typography variant="h4" fontWeight="bold" textAlign={["center", "left"]}>
+      <Typography fontSize={["24px", "28px"]} fontWeight="bold" textAlign={["center"]}>
         Select your plan and start speaking!
       </Typography>
-      <Typography variant="subtitle1" textAlign={["center", "left"]} mb={2}>
+      <Typography fontSize={["14px", "18px"]} textAlign={["center"]} mb={[1, 2]}>
         100% of profit goes to supporting education of disadvantaged people
       </Typography>
 

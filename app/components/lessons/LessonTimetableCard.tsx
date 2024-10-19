@@ -1,8 +1,6 @@
-import { Box, Button, capitalize, Typography } from "@mui/material"
-import dayjs from "dayjs"
+import { Box, capitalize, Typography } from "@mui/material"
 import ChipX from "../elements/ChipX"
 import { capitalizeFirstLetter } from "../helpers/capitalizeFirstLetter"
-import localTime from "../helpers/localTime"
 import EventIcon from "@mui/icons-material/Event"
 import AccessTimeIcon from "@mui/icons-material/AccessTime"
 import { useStoreUser } from "../zustand"
@@ -15,6 +13,7 @@ import ApiServices from "@/api/ApiServices"
 import { brandColors } from "../utils/brandColors"
 import AssessmentIcon from "@mui/icons-material/Assessment"
 import { englishLevels } from "../utils/englishLevels"
+import { formatHourMinutes, formatMonthDay } from "../helpers/localTime"
 
 const LessonTimetableCard = memo(({ lesson }: { lesson: LessonTimetableType }) => {
 	const { userInfo } = useStoreUser()
@@ -137,13 +136,13 @@ const LessonTimetableCard = memo(({ lesson }: { lesson: LessonTimetableType }) =
 						<Box sx={{ display: "flex", alignItems: "center", mb: "5px" }}>
 							<EventIcon sx={{ mr: 1, height: 20 }} />
 							<Typography sx={{ fontSize: "inherit", fontWeight: "inherit" }}>
-								{dayjs(localTime(lesson.lesson_date)).format("dddd, MMM D")}
+								{(formatMonthDay(lesson.lesson_date))}
 							</Typography>
 						</Box>
 						<Box sx={{ display: "flex", alignItems: "center", mb: "5px" }}>
 							<AccessTimeIcon sx={{ mr: 1, height: 20 }} />
 							<Typography sx={{ fontSize: "inherit", fontWeight: "inherit" }}>
-								{lesson?.lesson_type === "speaking_club" ? "20:00" : "19:00"} (50 min)
+								{formatHourMinutes(lesson.lesson_date)}
 							</Typography>
 						</Box>
 						<Box sx={{ display: "flex", alignItems: "center", mb: "5px" }}>

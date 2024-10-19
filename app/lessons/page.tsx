@@ -17,6 +17,7 @@ import LoadingPage from "@/components/LoadingPage"
 import { LessonTimetableType } from "@/types/types"
 import groupLessonsByWeek from "@/components/helpers/getWeekRange"
 import { filterLessonsBySubscriptionType } from "@/components/helpers/filterLessonsBySubscriptionType"
+import { formatMonthDay } from "@/components/helpers/localTime"
 
 function index() {
 	const { apiRequest } = ApiServices()
@@ -146,7 +147,7 @@ function index() {
 												>
 													<Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
 														<Typography sx={{ fontSize: 16, fontWeight: 600 }}>
-															{dayjs(date_from).format("D MMMM")} - {dayjs(date_to).format("D MMMM")}
+															{formatMonthDay(date_from)} - {formatMonthDay(date_to)}
 														</Typography>
 													</Box>
 												</Box>

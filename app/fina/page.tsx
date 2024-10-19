@@ -8,7 +8,7 @@ import InputBase from "@mui/material/InputBase"
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight"
 import dayjs from "dayjs"
 import TextToSpeechButton from "@/components/speakpage/TextToSpeechButton"
-import { useStoreTemporary, useStoreUser } from "@/components/zustand"
+import { useStoreUser } from "@/components/zustand"
 import DeleteIcon from "@mui/icons-material/Delete"
 import OpenAiFina from "@/components/utils/OpenAiFina"
 import { brandColors } from "@/components/utils/brandColors"
@@ -18,13 +18,12 @@ interface Message {
 	content: string
 	order?: number
 }
-export default function Fina(props: any) {
+export default function Fina({ handleClose }: { handleClose: () => void }) {
 	const theme = useTheme()
 	const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 	const { userInfo } = useStoreUser()
 	const [prompt, setPrompt] = useState("")
 	const now = dayjs().format("MMM D, YYYY")
-	const { botComponentWidth, setBotComponentWidth } = useStoreTemporary()
 	const [messages, setMessages] = useState<Message[]>([
 		{
 			role: "assistant",
@@ -100,7 +99,7 @@ export default function Fina(props: any) {
 		<Box
 			//@ts-ignore
 			sx={{
-				width: isSmallScreen ? "100vw" : botComponentWidth,
+				width: isSmallScreen ? "100vw" : 450,
 				height: "100vh",
 				color: "white",
 				transition: "all 0.3s ease-in-out",
@@ -124,7 +123,7 @@ export default function Fina(props: any) {
 			>
 				<IconButton
 					sx={{ color: brandColors.iconGrey }}
-					onClick={() => (isSmallScreen ? props.setOpen(false) : setBotComponentWidth(0))}
+					onClick={handleClose}
 				>
 					<KeyboardDoubleArrowRightIcon />
 				</IconButton>

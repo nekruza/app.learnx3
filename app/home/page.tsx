@@ -5,7 +5,7 @@ import ProtectedRoute from "../components/auth/ProtectedRoute"
 import SidebarContainer from "../components/SidebarContainer"
 import DashboardLessonTimetable from "../components/dashboard/DashboardLessonTimetable"
 import DashboardLessonTimetableMobile from "../components/dashboard/DashboardLessonTimetableMobile"
-import { useStoreTemporary, useStoreUser } from "../components/zustand"
+import { useStoreUser } from "../components/zustand"
 import ExploreTopics from "../components/dashboard/ExploreTopics"
 import WordOfTheDay from "../components/dashboard/WordOfTheDay"
 import MostRecentTestScore from "../components/dashboard/MostRecentTestScore"
@@ -15,7 +15,6 @@ import DashboardAvatar from "@/components/dashboard/DashboardAvatar"
 import PricingModal from "@/components/pricing/PricingModal"
 
 function MyDashboard() {
-	const { botComponentWidth } = useStoreTemporary()
 	const { userInfo } = useStoreUser()
 
 	return (
@@ -23,7 +22,7 @@ function MyDashboard() {
 			<SidebarContainer>
 				<Grid container spacing={2}>
 					<Grid item xs={12} md={6}>
-						<Box display={["flex", "none"]} alignItems="center">
+						<Box display={["flex", "none"]} alignItems="center" mb={2}>
 							{((userInfo?.role === "student" && !userInfo?.paid) || userInfo?.role === "admin") && (
 								<PricingModal buttonText="Upgrade to Pro" />
 							)}
@@ -34,7 +33,7 @@ function MyDashboard() {
 					<Grid item xs={12} md={6}>
 						<DashboardAvatar />
 					</Grid>
-					<Grid item xs={12} sm={botComponentWidth === 900 ? 12 : 8}>
+					<Grid item xs={12} sm={8}>
 						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<ExploreTopics />
@@ -47,7 +46,7 @@ function MyDashboard() {
 							</Grid>
 						</Grid>
 					</Grid>
-					<Grid item xs={12} sm={botComponentWidth === 900 ? 12 : 4}>
+					<Grid item xs={12} sm={4}>
 						<StudentRanking />
 					</Grid>
 					<Grid item xs={12}>

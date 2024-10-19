@@ -3,16 +3,14 @@ import * as React from "react"
 import { styled } from "@mui/material/styles"
 import Badge from "@mui/material/Badge"
 import Avatar from "@mui/material/Avatar"
-import { useStoreTemporary } from "../zustand"
 import { usePathname } from "next/navigation"
 
 const FinaAvatar = ({ handleFinaClick }: { handleFinaClick: () => void }) => {
-	const { botComponentWidth } = useStoreTemporary()
 	const pathname = usePathname()
 
 	return (
 		<>
-			{botComponentWidth !== 900 && !pathname.includes("avatar") && (
+			{!pathname.includes("avatar") && (
 				<StyledBadge
 					overlap="circular"
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

@@ -9,6 +9,7 @@ import ApiServices from "../api/ApiServices"
 import { brandColors } from "./utils/brandColors"
 import Link from "next/link"
 import PricingModal from "./pricing/PricingModal"
+import DrawerComponent from "./ui/Drawer"
 
 const Navbar = () => {
 	const theme = useTheme()
@@ -74,7 +75,7 @@ const Navbar = () => {
 							)}
 						</Box>
 					</Box>
-
+					<DrawerComponent />
 					<AccountMenu isSmallScreen={isSmallScreen} />
 				</Box>
 			</Box>

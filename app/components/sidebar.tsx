@@ -4,13 +4,12 @@ import { Box } from "@mui/system"
 import HomeIcon from "@mui/icons-material/Home"
 import BarChartIcon from "@mui/icons-material/BarChart"
 import { List } from "@mui/material"
-import QueryStatsIcon from "@mui/icons-material/QueryStats"
 import QuizIcon from "@mui/icons-material/Quiz"
 import CastForEducationIcon from "@mui/icons-material/CastForEducation"
 import LightbulbIcon from "@mui/icons-material/Lightbulb"
 import PersonIcon from "@mui/icons-material/Person"
-import { useStoreTemporary, useStoreUser } from "./zustand"
-import { usePathname, useRouter } from "next/navigation"
+import { useStoreUser } from "./zustand"
+import { usePathname, } from "next/navigation"
 import Link from "next/link"
 import VerifiedIcon from "@mui/icons-material/Verified"
 import AppsIcon from "@mui/icons-material/Apps"
@@ -20,7 +19,6 @@ import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural
 function sidebar() {
 	const pathname = usePathname()
 	const { userInfo } = useStoreUser()
-	const { botComponentWidth } = useStoreTemporary()
 
 	return (
 		<Box
@@ -28,7 +26,7 @@ function sidebar() {
 			sx={{
 				background: "white",
 				maxWidth: "none",
-				width: botComponentWidth === 900 ? "170px" : "120px",
+				width: "120px",
 				transition: "width 0.3s ease-out",
 				display: { xs: "none", sm: "flex" },
 				flexDirection: "column",

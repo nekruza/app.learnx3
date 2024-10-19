@@ -1,24 +1,14 @@
 "use client"
 import React from "react"
 import { ThemeProvider, useTheme } from "@mui/material/styles"
-import { Box, useMediaQuery } from "@mui/material"
+import { Box } from "@mui/material"
 import Sidebar from "./sidebar"
 import Navbar from "./Navbar"
-import FinaAvatar from "./fina/FinaAvatar"
 import MobileBottomBar from "./MobileBottomBar"
-import { FinaAvatarMobilePopup } from "./fina/FinaAvatarMobilePopup"
-import { useStoreTemporary } from "./zustand"
-import Fina from "@/fina/page"
+import DrawerComponent from "./ui/Drawer"
 
 function SidebarContainer({ children }: { children: React.ReactNode }) {
 	const theme = useTheme()
-	const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
-	const { setBotComponentWidth } = useStoreTemporary()
-	const [finaPopupOpen, setFinaPopupOpen] = React.useState<boolean>(false)
-
-	const handleFinaPopup = () => {
-		isSmallScreen ? setFinaPopupOpen(true) : setBotComponentWidth(900)
-	}
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -26,8 +16,7 @@ function SidebarContainer({ children }: { children: React.ReactNode }) {
 				//@ts-ignore
 				sx={{ width: "100%", paddingBottom: { xs: "70px", sm: "10px" } }}
 			>
-				<FinaAvatar handleFinaClick={handleFinaPopup} />
-				<FinaAvatarMobilePopup open={finaPopupOpen} setOpen={setFinaPopupOpen} />
+				<DrawerComponent />
 
 				<Box
 					sx={{
@@ -44,7 +33,6 @@ function SidebarContainer({ children }: { children: React.ReactNode }) {
 						</Box>
 						<MobileBottomBar />
 					</Box>
-					{!isSmallScreen && <Fina setOpen={setFinaPopupOpen} />}
 				</Box>
 			</Box>
 		</ThemeProvider>

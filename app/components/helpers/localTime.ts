@@ -20,11 +20,11 @@ export const fromUTCtoLocal = (utcDate: string | Dayjs | null) => {
 };
 
 // Format date for display
-export const formatMonthDay = (date: string) => {
+export const formatMonthDay = (date: string | Dayjs | null) => {
 	return fromUTCtoLocal(date).format("dddd, MMMM D")
 };
 
-export const formatHourMinutes = (date: string) => {
+export const formatHourMinutes = (date: string | Dayjs | null) => {
 	return fromUTCtoLocal(date).format("HH:mm")
 };
 

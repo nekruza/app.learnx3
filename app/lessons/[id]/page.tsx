@@ -5,7 +5,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import ErrorPage from "@/errorpage"
 import ProtectedRoute from "@/components/auth/ProtectedRoute"
 import SidebarContainer from "@/components/SidebarContainer"
-import dayjs from "dayjs"
 import EventIcon from "@mui/icons-material/Event"
 import AssessmentIcon from "@mui/icons-material/Assessment"
 import VideocamIcon from "@mui/icons-material/Videocam"
@@ -14,7 +13,6 @@ import { useStoreUser } from "@/components/zustand"
 import ChipX from "@/components/elements/ChipX"
 import { lessonTypeColors } from "@/components/utils/lessonTypeColors"
 import { capitalizeFirstLetter } from "@/components/helpers/capitalizeFirstLetter"
-import localTime from "@/components/helpers/localTime"
 import { englishLevels } from "@/components/utils/englishLevels"
 import AddLesson from "@/components/lessons/AddLesson"
 import { lessonDescription } from "@/components/data/LessonDescription"
@@ -25,6 +23,7 @@ import { UserType } from "@/types/types"
 import { useMemo } from "react"
 import CustomAvatar from "@/components/elements/CustomAvatar"
 import { brandColors } from "@/components/utils/brandColors"
+import { formatHourMinutes, formatMonthDay } from "@/components/helpers/localTime"
 
 function Lesson({ params }: { params: { id: string } }) {
 	const queryClient = useQueryClient()
@@ -211,13 +210,13 @@ function Lesson({ params }: { params: { id: string } }) {
 										<Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
 											<EventIcon sx={{ mr: 1 }} />
 											<Typography sx={{ fontSize: "inherit", fontWeight: "inherit" }}>
-												{dayjs(localTime(lessonTimetableList?.data?.lesson_date)).format("dddd, MMM D")}
+												{formatMonthDay(lessonTimetableList?.data?.lesson_date)}
 											</Typography>
 										</Box>
 										<Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
 											<AccessTimeIcon sx={{ mr: 1 }} />
 											<Typography sx={{ fontSize: "inherit", fontWeight: "inherit" }}>
-												{lessonTimetableList?.data?.lesson_type === "speaking_club" ? "20:00" : "19:00"} (50 min)
+												{formatHourMinutes(lessonTimetableList?.data?.lesson_date)}
 											</Typography>
 										</Box>
 										<Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>

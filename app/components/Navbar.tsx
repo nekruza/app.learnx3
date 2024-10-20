@@ -1,3 +1,4 @@
+"use client"
 import { auth } from "./firebaseX"
 import { Box, Button, Typography, useMediaQuery, useTheme } from "@mui/material"
 import AccountMenu from "./auth/SignOut"
@@ -8,6 +9,8 @@ import { useMemo } from "react"
 import ApiServices from "../api/ApiServices"
 import { brandColors } from "./utils/brandColors"
 import Link from "next/link"
+import PricingModal from "./pricing/PricingModal"
+import DrawerComponent from "./ui/Drawer"
 
 const Navbar = () => {
 	const theme = useTheme()
@@ -67,8 +70,13 @@ const Navbar = () => {
 						<Typography variant="body2" sx={TypographyStyle}>
 							⭐️ {getStudentTotalScore}
 						</Typography>
+						<Box display={["none", "flex"]} ml={1} alignItems="center">
+							{((userInfo?.role === "student" && !userInfo?.paid) || userInfo?.role === "admin") && (
+								<PricingModal buttonText="Upgrade to Pro" />
+							)}
+						</Box>
 					</Box>
-
+					<DrawerComponent />
 					<AccountMenu isSmallScreen={isSmallScreen} />
 				</Box>
 			</Box>

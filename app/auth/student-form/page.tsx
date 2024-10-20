@@ -13,7 +13,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { useRouter } from "next/navigation"
 import { useStoreUser } from "@/components/zustand"
 import { auth, db, storage } from "@/components/firebaseX"
-import { Alert, Divider, FormControl, Input, InputLabel, MenuItem, Select, Typography } from "@mui/material"
+import { Alert, Divider, FormControl, FormLabel, Input, InputLabel, MenuItem, Select, Typography } from "@mui/material"
 import Link from "next/link"
 import { UserType } from "@/types/types"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
@@ -67,7 +67,7 @@ export default function StudentForm() {
 			phone: phone,
 			country: country,
 			role: "student",
-			permit: false,
+			permit: true,
 			performance: "Doing ok",
 			eng_level_form: eng_level_form as any,
 			eng_level_test: "",
@@ -150,7 +150,7 @@ export default function StudentForm() {
 				</Typography>
 				<Typography>Enter details to set up your account</Typography>
 				<Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-					<Grid container spacing={4}>
+					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
 								size="small"
@@ -182,12 +182,15 @@ export default function StudentForm() {
 								type="number"
 								name="phone"
 								fullWidth
-								label="Phone Number"
+								label="WhatsApp Number"
 								value={phone}
 								onChange={handleInput}
 							/>
 						</Grid>
 						<Grid item xs={12}>
+							<FormLabel sx={{ fontSize: "14px", mx: 1 }}>
+								Upload Image
+							</FormLabel>
 							<Input
 								name="image"
 								type="file"
@@ -276,9 +279,9 @@ export default function StudentForm() {
 							type="submit"
 							fullWidth
 							variant="contained"
-							sx={{ mt: 4, mb: 2, background: "linear-gradient(45deg, rgb(139, 88, 254), rgb(95, 222, 231))" }}
+							sx={{ mt: 4, mb: 2, background: "linear-gradient(45deg, rgb(139, 88, 254), rgb(95, 222, 231))", fontWeight: "bold" }}
 						>
-							🏁 Save
+							Save
 						</Button>
 					</Box>
 					<Grid item xs={12}>

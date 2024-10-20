@@ -2,7 +2,7 @@ import * as React from "react"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker"
-import localTime from "../helpers/localTime"
+import { fromUTCtoLocal, toUTC } from "../helpers/localTime"
 import { LessonTimetableType } from "@/types/types"
 import { Dayjs } from "dayjs"
 const dayjs = require("dayjs")
@@ -23,8 +23,8 @@ const DatePickerX = React.memo(
 					sx={{ width: "100%" }}
 					label="Controlled picker"
 					ampm={false}
-					value={localTime(calendarValue) || null}
-					onChange={(newValue) => setCalendarValue((prev) => ({ ...prev, lesson_date: newValue }))}
+					value={fromUTCtoLocal(calendarValue || "")}
+					onChange={(newValue) => setCalendarValue((prev) => ({ ...prev, lesson_date: toUTC(newValue) }))}
 				/>
 			</LocalizationProvider>
 		)

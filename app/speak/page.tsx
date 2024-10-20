@@ -9,13 +9,11 @@ import CreateAiLesson from "@/components/dashboard/CreateAiLesson"
 import ErrorPage from "../error"
 import dayjs from "dayjs"
 import LoadingPage from "@/components/LoadingPage"
-import { useStoreTemporary } from "@/components/zustand"
 import { TopicType } from "@/types/types"
 import CustomCard from "@/components/other/CustomCard"
 
 function index() {
 	const [category, setCategory] = React.useState("All")
-	const { botComponentWidth } = useStoreTemporary()
 	const { apiRequest, fetchAiImages } = ApiServices()
 
 	const { data: topicImages } = useQuery({
@@ -86,7 +84,7 @@ function index() {
 									const imageX = topicImages?.data.find(({ name }: { name: string }) => name === x?.imagePath)
 
 									return (
-										<Grid item xs={6} sm={botComponentWidth === 900 ? 4 : 3} lg={botComponentWidth === 900 ? 4 : 2}>
+										<Grid item xs={6} sm={3} lg={2}>
 											<CustomCard
 												title={x.topic}
 												link={`/speak/${x.lessonId}`}

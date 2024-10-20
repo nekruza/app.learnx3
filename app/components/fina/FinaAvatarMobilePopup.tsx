@@ -2,7 +2,7 @@ import * as React from "react"
 import { styled } from "@mui/material/styles"
 import Dialog from "@mui/material/Dialog"
 import { DialogContent } from "@mui/material"
-import Fina from "@/fina/page"
+import Fina from "@/fina/Fina"
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 	width: "100vw",
@@ -23,7 +23,7 @@ export const FinaAvatarMobilePopup: React.FC<{
 	return (
 		<BootstrapDialog fullWidth fullScreen maxWidth="md" open={open} sx={{ zIndex: 999 }}>
 			<DialogContent dividers sx={{ background: "#271f4d" }}>
-				<Fina setOpen={setOpen} />
+				<Fina handleClose={() => setOpen(false)} />
 			</DialogContent>
 		</BootstrapDialog>
 	)

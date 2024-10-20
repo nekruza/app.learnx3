@@ -1,3 +1,4 @@
+"use client"
 import { Box, capitalize, Typography } from "@mui/material"
 import ChipX from "../elements/ChipX"
 import { capitalizeFirstLetter } from "../helpers/capitalizeFirstLetter"

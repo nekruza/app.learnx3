@@ -1,5 +1,4 @@
 "use client"
-
 import React from "react"
 import { Grid } from "@mui/material"
 import ProtectedRoute from "@/components/auth/ProtectedRoute"

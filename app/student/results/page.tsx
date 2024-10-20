@@ -1,5 +1,4 @@
 "use client"
-
 import * as React from "react"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
@@ -129,10 +128,10 @@ const StudentResult = React.memo(({ testResults, studentId, assessmentType }: an
 					Number(assessmentType === "averageGrade" ? averageGrade : sumResult) >= 70
 						? "rgb(87, 204, 153)"
 						: Number(assessmentType === "averageGrade" ? averageGrade : sumResult) >= 40
-						? "#ffff3f"
-						: Number(assessmentType === "averageGrade" ? averageGrade : sumResult) >= 0
-						? "#ff595e"
-						: "rgb(222, 226, 230)",
+							? "#ffff3f"
+							: Number(assessmentType === "averageGrade" ? averageGrade : sumResult) >= 0
+								? "#ff595e"
+								: "rgb(222, 226, 230)",
 				p: 1,
 				m: 0,
 				borderRadius: "6px",

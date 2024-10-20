@@ -1,3 +1,4 @@
+"use client"
 import { auth } from "./firebaseX"
 import { Box, Button, Typography, useMediaQuery, useTheme } from "@mui/material"
 import AccountMenu from "./auth/SignOut"

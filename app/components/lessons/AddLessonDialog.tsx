@@ -125,6 +125,7 @@ const AddLessonDialog = React.memo(
 									</Grid>
 									<Grid item xs={12} sm={6}>
 										<DatePickerX calendarValue={lessonInfo.lesson_date} setCalendarValue={setLessonInfo} />
+										{lessonInfo?.lesson_date && <Typography sx={{ padding: "2px 5px", mt: "2px", fontSize: 12 }}> Time in Tajikistan: {lessonInfo?.lesson_date ? new Date(lessonInfo?.lesson_date as string).toLocaleString('en-US', { timeZone: 'Asia/Dushanbe', hour: '2-digit', minute: '2-digit', hour12: false }) : ''}</Typography>}
 									</Grid>
 
 									<Grid item xs={12}>

@@ -14,13 +14,15 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
 
 const BaseCard = styled(Card)({
   marginTop: 2,
-  marginBottom: 1,
+  marginBottom: 30,
   backgroundImage: 'url(/ai-ppt-images/ai-ppt-bg.png)',
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'center',
   backgroundSize: 'cover',
   width: '100%',
-  height: "500px",
+  minHeight: "500px",
+  maxHeight: "600px",
+  maxWidth: '1000px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -41,7 +43,6 @@ const ClassSignature = () => (
 
 export const Slide = ({ title, content, isList = false, image = false }: { title: string, content: string | string[], isList?: boolean, image?: boolean }) => {
 
-  console.log({ content });
   return (
     <Box sx={{
       display: 'flex',
@@ -94,6 +95,7 @@ export const SlideOne = ({ title, content }: { title: string, content: string })
         alignItems: 'start',
         gap: 1,
         padding: 4,
+        mb: 4
       }}>
         <Typography variant="h4" fontWeight={600} color="white">Topic</Typography>
         <Typography variant="h2" fontWeight={600} color={brandColors.yellow}>{title}</Typography>
@@ -105,7 +107,7 @@ export const SlideOne = ({ title, content }: { title: string, content: string })
         alignItems: 'center',
         padding: 2,
       }}>
-        <Image src="/ai-ppt-images/ai-ppt-page-1.png" alt="ai-ppt-1" width={380} height={350} />
+        <Image src="/ai-ppt-images/ai-ppt-page-1.png" alt="ai-ppt-1" width={400} height={350} />
       </Box>
     </BaseBox>
   </BaseCard>
@@ -119,7 +121,10 @@ export const SlideLast = () => (
       alignItems: 'center',
       gap: 1,
     }}>
-      <Typography variant="h2" fontWeight={600} color="#e5c643">Thank you</Typography>
+      <Typography sx={{ fontSize: '4rem' }}>
+        🎊
+      </Typography>
+      <Typography variant="h2" fontWeight={600} color="#e5c643" mb={2}>Thank you!</Typography>
       <ClassSignature />
     </BaseBox>
   </BaseCard>

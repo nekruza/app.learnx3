@@ -1,0 +1,132 @@
+{
+  "name": "presentation_schema",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "topic": {
+        "description": "The topic of the presentation",
+        "type": "string"
+      },
+      "slides": {
+        "description": "A list of slides with detailed content",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "string"
+            },
+            "content": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "for_teacher_transition": {
+                  "type": "string"
+                },
+                "lesson_goal": {
+                  "type": "string"
+                },
+                "focus_points": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "for_teacher_talk": {
+                  "type": "string"
+                },
+                "vocabulary": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "formulation_rules": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "use_cases": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "for_teacher_practice_prompt": {
+                  "type": "string"
+                },
+                "for_teacher_mini_task": {
+                  "type": "string"
+                },
+                "instructions": {
+                  "type": "string"
+                },
+                "example_sentences": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "answers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "for_teacher_pair_work": {
+                  "type": "string"
+                },
+                "challenge": {
+                  "type": "string"
+                },
+                "structure_support": {
+                  "type": "string"
+                },
+                "partner_activity": {
+                  "type": "string"
+                },
+                "summary": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "review_questions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "final_activity": {
+                  "type": "string"
+                },
+                "for_teacher_closing": {
+                  "type": "string"
+                }
+              },
+              "required": []
+            }
+          },
+          "required": ["title", "subtitle", "content"]
+        }
+      }
+    },
+    "required": ["topic", "slides"],
+    "additionalProperties": false
+  }
+}

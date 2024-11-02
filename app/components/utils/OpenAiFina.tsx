@@ -1,4 +1,5 @@
 import OpenAI from "openai"
+import { ChatCompletionCreateParamsNonStreaming } from "openai/resources"
 
 interface GptProps {
 	model: string
@@ -8,10 +9,14 @@ interface GptProps {
 	}[]
 	temperature: number
 	max_tokens: number
-	presence_penalty: number
+	presence_penalty?: number
+	response_format?: {
+		type: "json_schema"
+		json_schema: any
+	}
 }
 
-function OpenAiFina(prompt: GptProps) {
+function OpenAiFina(prompt: GptProps & ChatCompletionCreateParamsNonStreaming) {
 	const openai = new OpenAI({
 		apiKey: process.env.NEXT_PUBLIC_OPENAI_KEY,
 		dangerouslyAllowBrowser: true,

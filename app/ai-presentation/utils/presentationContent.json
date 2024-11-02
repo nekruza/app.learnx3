@@ -1,0 +1,119 @@
+{
+  "topic": "Noun",
+  "slides": [
+    {
+      "title": "Starter – Warm-up",
+      "subtitle": "Revisiting Past Content",
+      "content": {
+        "text": [
+          "Brief recap of parts of speech with examples (e.g., 'I saw a cat.').",
+          "Quick questions to activate prior knowledge:",
+          "1. 'What is a noun?'",
+          "2. 'Can you name some animals?'"
+        ],
+        "for_teacher_transition": "Lead into today’s topic by asking, 'What are nouns, and why are they important in sentences?'"
+      }
+    },
+    {
+      "title": "Introduction to Nouns",
+      "subtitle": "Lesson Goals",
+      "content": {
+        "lesson_goal": "Today, we will learn to identify and use nouns in sentences.",
+        "focus_points": [
+          "Definition and examples of nouns.",
+          "Different types of nouns (common, proper, collective, abstract)."
+        ],
+        "for_teacher_talk": "Explain that nouns are essential for naming people, places, things, and ideas, making it possible to communicate clearly."
+      }
+    },
+    {
+      "title": "Vocabulary in Context",
+      "subtitle": "Common and Proper Nouns",
+      "content": {
+        "vocabulary": ["dog", "London", "river", "book", "Emma", "happiness"],
+        "examples": [
+          "The dog is barking.",
+          "Emma is reading a book."
+        ],
+        "for_teacher_practice_prompt": "Ask students to identify common and proper nouns in a set of sentences (e.g., 'Where is the dog?' 'Who is Emma?')."
+      }
+    },
+    {
+      "title": "Types of Nouns",
+      "subtitle": "Rules and Usage",
+      "content": {
+        "formulation_rules": [
+          "Common Nouns: General names (e.g., 'city').",
+          "Proper Nouns: Specific names (e.g., 'Paris').",
+          "Collective Nouns: Names for groups (e.g., 'team').",
+          "Abstract Nouns: Names for ideas or concepts (e.g., 'freedom')."
+        ],
+        "use_cases": [
+          "Naming people, places, or things.",
+          "Describing concepts or ideas."
+        ],
+        "for_teacher_practice_prompt": "Provide a list of words and ask students to categorize them into types of nouns."
+      }
+    },
+    {
+      "title": "Nouns in Sentences",
+      "subtitle": "Identifying and Using Nouns",
+      "content": {
+        "formulation_rules": [
+          "Nouns can be subjects, objects, or predicate nouns in sentences."
+        ],
+        "use_cases": [
+          "Subject: 'The cat sleeps.'",
+          "Object: 'I see a cat.'",
+          "Predicate noun: 'He is a teacher.'"
+        ],
+        "examples": [
+          "She loves the ocean.",
+          "The team won the game."
+        ],
+        "for_teacher_mini_task": "Ask students to create sentences using nouns as subjects and objects from a given list."
+      }
+    },
+    {
+      "title": "Practice",
+      "subtitle": "Identifying Noun Types",
+      "content": {
+        "instructions": "Provide sentences for students to identify and label the types of nouns.",
+        "example_sentences": [
+          "'The team is winning.'",
+          "'Emma visited Paris.'"
+        ],
+        "answers": [
+          "'The team (collective noun) is winning.'",
+          "'Emma (proper noun) visited Paris (proper noun).'"
+        ],
+        "for_teacher_pair_work": "Students work in pairs to compare answers and discuss their reasoning."
+      }
+    },
+    {
+      "title": "Extension Task",
+      "subtitle": "Building on Noun Usage",
+      "content": {
+        "challenge": "Students write a short story using at least four different types of nouns.",
+        "structure_support": "Provide a checklist for including common, proper, collective, and abstract nouns.",
+        "partner_activity": "Students exchange stories and identify the types of nouns used in each other's work."
+      }
+    },
+    {
+      "title": "Wrap-Up and Summary",
+      "subtitle": "Key Takeaways",
+      "content": {
+        "summary": [
+          "Nouns name people, places, things, and ideas.",
+          "Different types of nouns include common, proper, collective, and abstract."
+        ],
+        "review_questions": [
+          "What is a proper noun?",
+          "Can you give an example of a collective noun?"
+        ],
+        "final_activity": "Each student shares one sentence with a noun they learned today.",
+        "for_teacher_closing": "Encourage students to notice and use various types of nouns in their daily communication."
+      }
+    }
+  ]
+}

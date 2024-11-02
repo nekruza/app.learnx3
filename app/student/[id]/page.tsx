@@ -1,8 +1,7 @@
 "use client"
-import { Avatar, Box, Grid, Typography } from "@mui/material"
+import { Box, Grid, Typography } from "@mui/material"
 import ApiServices from "@/api/ApiServices"
 import { useQuery } from "@tanstack/react-query"
-import { useRouter, useSearchParams } from "next/navigation"
 import LoadingPage from "@/components/LoadingPage"
 import ErrorPage from "@/errorpage"
 import TestResult from "@/components/assessment/TestResult"
@@ -98,14 +97,14 @@ function StudentProfile({ params }: { params: { id: string } }) {
 														data?.data.performance == "Struggling"
 															? "rgb(226, 109, 128)"
 															: data?.data.performance == "Doing Great"
-															? "#5fc497"
-															: "#41b6ff",
+																? "#5fc497"
+																: "#41b6ff",
 													border:
 														data?.data.performance == "Struggling"
 															? "1px solid rgb(226, 109, 128)"
 															: data?.data.performance == "Doing Great"
-															? "1px solid #5fc497"
-															: "1px solid #41b6ff",
+																? "1px solid #5fc497"
+																: "1px solid #41b6ff",
 												}}
 											>
 												{data?.data.performance}

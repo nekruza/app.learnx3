@@ -84,15 +84,15 @@ export const useStoreFilePath = create(
 
 
 export const useChatStore = create((set) => ({
-messages: [{
-	role: "system",
-	content:
-		"You an assistant which helps users with improving their english speaking fluency. Talk short sentences. If the user does mistakes, you will correct them."
-}, {
-	role: "assistant",
-	content: "Hey! I'm Fina. Let's practice your English! What would you like to talk about?"
-}],
-addMessage: (message) => set((state) => ({ messages: message }))
+		messages: [{
+			role: "system",
+			content:
+				"You an assistant which helps users with improving their english speaking fluency. Talk short sentences. If the user does mistakes, you will correct them."
+		}, {
+			role: "assistant",
+			content: "Hey! I'm Fina. Let's practice your English! What would you like to talk about?"
+		}],
+		addMessage: (message) => set((state) => ({ messages: message }))
 }))
 
 export const useSuggestionsStore = create((set) => ({
@@ -101,4 +101,10 @@ addSuggestion: (message) => set((state) => ({ suggestion: message }))
 }))
 
 
-export { useStore, useStoreTemporary, useStoreUser, useClassInfo }
+const usePresentationStore = create((set) => ({
+	presentation: null,
+	setPresentation: (presentation) => set(() => ({ presentation: presentation })),
+}))
+
+
+export { useStore, useStoreTemporary, useStoreUser, useClassInfo, usePresentationStore }

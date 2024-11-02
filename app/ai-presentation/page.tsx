@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { Box, Button, Card, Grid, CardContent, CardHeader, Input, Typography, Divider } from '@mui/material';
+import { Box, Button, Grid, Input, Typography, Divider } from '@mui/material';
 import OpenAiFina from '@/components/utils/OpenAiFina';
 import presentationSchema from './utils/presentationSchema.json';
 import presentationContent from './utils/presentationContent.json';
@@ -8,7 +8,6 @@ import { PresentationContent } from './utils/type';
 import { usePresentationStore } from '@/components/zustand';
 import { useRouter } from 'next/navigation';
 import { brandColors } from '@/components/utils/brandColors';
-import { LoadingSpinners } from '../components/constants/loadingSpinners';
 import { SpinningCircles } from 'react-loading-icons';
 
 
@@ -16,13 +15,21 @@ const PresentationGenerator = () => {
   const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
   const { setPresentation } = usePresentationStore();
+  const [englishLevel, setEnglishLevel] = useState<'beginner' | 'intermediate' | 'advanced'>('intermediate');
   const router = useRouter();
 
   const presentation_schema = JSON.stringify(presentationContent);
   const generatePresentation = async () => {
     setLoading(true);
     try {
-      const prompt = `Create a JSON object for an English language learning presentation on the topic "${topic}"`;
+      const prompt = `Create a JSON object for an English language learning presentation on the topic "${topic}" designed for teaching English language learners
+
+        **Guidelines:**
+        1. **Target Audience**: English language students with a "${englishLevel}" proficiency level.
+        2. **Language and Tone**: Use simple, clear, and engaging language suitable for beginner learners.
+        3. **Speaker Notes**: Add teacher notes for each slide to help guide the lesson.
+      
+      `;
       const response = await OpenAiFina({
         model: "gpt-4o-2024-08-06",
         messages: [{
@@ -75,13 +82,20 @@ const PresentationGenerator = () => {
             '&::after': { display: 'none' },
           }}
         />
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+          {
+            ['beginner', 'intermediate', 'advanced'].map((level) => (
+              <Button sx={{ padding: '2px 12px', borderRadius: '8px', background: englishLevel === level ? brandColors.lightPurple : brandColors.lighterGrey, color: englishLevel === level ? 'white' : 'black' }} onClick={() => setEnglishLevel(level as 'beginner' | 'intermediate' | 'advanced')}>{level}</Button>
+            ))
+          }
+        </Box>
         <Button
           onClick={generatePresentation}
           disabled={loading || !topic}
           fullWidth
           sx={{
             background: loading ? "#94a3b8" : brandColors.darkPurple,
-            color: brandColors.yellow,
+            color: "white",
             maxWidth: 'max-content',
             fontWeight: 600,
             display: 'flex',
@@ -89,7 +103,7 @@ const PresentationGenerator = () => {
             gap: 2,
             paddingX: '16px',
             '&:disabled': {
-              color: brandColors.lighterGrey,
+              color: "#c4c2c2",
               background: brandColors.darkPurple,
             },
             '&:hover': {

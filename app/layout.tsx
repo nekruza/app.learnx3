@@ -28,9 +28,7 @@ export default function RootLayout({ children }: any) {
                     gtag('config', "${analyticsCode}");
           `}
 				</Script>
-				<Head>
-					<HotJar />
-				</Head>
+				<HotJar />
 				<QueryClientProvider client={queryClient}>
 					<CssBaseline />
 					{/* <Hydrate state={children.dehydratedState}> */}

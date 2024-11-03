@@ -2,6 +2,7 @@
 import Script from "next/script";
 
 const HotJar = () => {
+  console.log(process.env.NEXT_PUBLIC_NODE_ENV, process.env.NEXT_PUBLIC_HOTJAR_ID)
   if (
     process.env.NEXT_PUBLIC_NODE_ENV === "production" &&
     process.env.NEXT_PUBLIC_HOTJAR_ID
@@ -19,7 +20,7 @@ const HotJar = () => {
             r.async = 1;
             r.src = t + h._hjSettings.hjid + j;
             a.appendChild(r);
-          })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+          })(window, document, 'https://static.hotjar.com/c/hotjar-${process.env.NEXT_PUBLIC_HOTJAR_ID}', '.js?sv=');
         `}
       </Script>
     );

@@ -42,6 +42,7 @@ function MyDashboard() {
 				<SidebarContainer>
 					<Grid container spacing={2}>
 						<Grid item xs={12} md={6}>
+							{/* @ts-ignore */}
 							<Box display={["flex", "none"]} alignItems="center" mb={2}>
 								{((userInfo?.role === "student" && !userInfo?.paid) || userInfo?.role === "admin") && (
 									<PricingModal buttonText="Upgrade to Pro" />

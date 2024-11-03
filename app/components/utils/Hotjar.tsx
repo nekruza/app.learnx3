@@ -1,21 +1,25 @@
-
 "use client";
 import Script from "next/script";
 
 const HotJar = () => {
-  if (process.env.NODE_ENV === "production" && process.env.HOTJAR_ID) {
+  if (
+    process.env.NEXT_PUBLIC_NODE_ENV === "production" &&
+    process.env.NEXT_PUBLIC_HOTJAR_ID
+  ) {
     return (
-      <Script id="hotjar">
+      <Script id="hotjar" strategy="afterInteractive">
         {`
-          (function (c, s, q, u, a, r, e) {
-        c.hj=c.hj||function(){(c.hj.q=c.hj.q||[]).push(arguments)};
-        c._hjSettings = { hjid: a };
-        r = s.getElementsByTagName('head')[0];
-        e = s.createElement('script');
-        e.async = true;
-        e.src = q + c._hjSettings.hjid + u;
-        r.appendChild(e);
-      })(window, document, 'https://static.hj.contentsquare.net/c/csq-', '.js', ${process.env.HOTJAR_ID})
+          (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () {
+              (h.hj.q = h.hj.q || []).push(arguments);
+            };
+            h._hjSettings = { hjid: ${process.env.NEXT_PUBLIC_HOTJAR_ID}, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script');
+            r.async = 1;
+            r.src = t + h._hjSettings.hjid + j;
+            a.appendChild(r);
+          })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
         `}
       </Script>
     );

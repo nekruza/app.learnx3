@@ -18,7 +18,11 @@ export async function POST(request: Request) {
 			messages: [
 				{
 					role: "system",
-					content: `Translate the following text to ${targetLanguage}: ${text}`,
+					content: `Translate the following text from English to ${targetLanguage}. Keep the translation accurate and natural, while preserving the original tone and meaning.
+
+					Text:
+					"${text}"
+`,
 				},
 			],
 			model: "gpt-4o-mini",

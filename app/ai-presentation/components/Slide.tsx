@@ -1,8 +1,9 @@
 "use client"
 import { brandColors } from "@/components/utils/brandColors";
-import { Box, Card, List, ListItem, ListItemText, Typography } from "@mui/material";
+import { Box, Card, List, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import Image from "next/image";
+import HoverAudioTranslator from "./HoverTranslator";
 
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
@@ -72,7 +73,9 @@ export const Slide = ({ title, content, isList = false, image = false }: { title
         }}>
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
             {(content as string[]).map((item: string, index: number) => (
-              <Typography paragraph key={index} sx={{ padding: "2px 10px", background: "#f1f5f9", borderRadius: "4px", margin: "4px" }}>{item}</Typography>
+              <HoverAudioTranslator text={item} key={index}>
+                <Typography paragraph sx={{ padding: "2px 10px", background: "#f1f5f9", borderRadius: "4px", margin: "4px", position: "relative" }}>{item}</Typography>
+              </HoverAudioTranslator>
             ))}
           </Box>
         </List>

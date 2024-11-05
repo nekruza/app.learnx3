@@ -182,6 +182,7 @@ export default function StudentForm() {
 								type="number"
 								name="phone"
 								fullWidth
+								required
 								label="WhatsApp Number"
 								value={phone}
 								onChange={handleInput}

@@ -140,6 +140,7 @@ const AddLesson = React.memo<{ buttonName?: string; _lesson?: LessonTimetableTyp
 						padding: "2.2px 10px",
 						width: "100%",
 						border: "none",
+						maxWidth: "max-content",
 					}}
 				>
 					{buttonName ? buttonName : "+ Create lesson"}

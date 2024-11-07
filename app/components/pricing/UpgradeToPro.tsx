@@ -136,7 +136,7 @@ const PricingData = [
   {
     title: "Pro",
     subtitle: "Unlock the full potential of your language learning journey",
-    price: "$10",
+    price: "$20",
     period: "/month",
     buttonText: "Upgrade to Pro",
     features: [

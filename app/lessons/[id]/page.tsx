@@ -24,6 +24,7 @@ import { useMemo } from "react"
 import CustomAvatar from "@/components/elements/CustomAvatar"
 import { brandColors } from "@/components/utils/brandColors"
 import { formatHourMinutes, formatMonthDay } from "@/components/helpers/localTime"
+import { isAdminOrTeacher } from "@/components/hooks/userRoles"
 
 function Lesson({ params }: { params: { id: string } }) {
 	const queryClient = useQueryClient()
@@ -205,6 +206,8 @@ function Lesson({ params }: { params: { id: string } }) {
 											color: "rgb(50, 50, 93)",
 											fontSize: "13px",
 											fontWeight: 500,
+											width: "100%",
+
 										}}
 									>
 										<Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
@@ -226,10 +229,11 @@ function Lesson({ params }: { params: { id: string } }) {
 											</Typography>
 										</Box>
 									</Box>
-									<Box sx={{ display: "flex", justifyContent: "space-between" }}>
+									<Box sx={{ display: "flex", gap: "4px", width: "100%", justifyContent: "start" }}>
 										<a
 											target="_blank"
 											rel="noreferrer"
+											style={{ width: isAdminOrTeacher(userInfo) ? "max-content" : "100%" }}
 											href={
 												lessonTimetableList?.data?.lesson_type === "general_english"
 													? lessonTimetableList?.data.video_call_link
@@ -244,7 +248,8 @@ function Lesson({ params }: { params: { id: string } }) {
 													color: "white",
 													fontWeight: "600",
 													padding: "3px 10px",
-													width: "max-content",
+													width: isAdminOrTeacher(userInfo) ? "max-content" : "100%",
+													maxWidth: 400,
 													"&:hover": { background: "#424493" },
 												}}
 											>
@@ -258,7 +263,7 @@ function Lesson({ params }: { params: { id: string } }) {
 											</Button>
 										</a>
 
-										{(userInfo?.role == "admin" || userInfo?.role == "teacher") && (
+										{isAdminOrTeacher(userInfo) && (
 											<AddLesson _lesson={lessonTimetableList?.data} buttonName="Edit lesson" id={id} />
 										)}
 									</Box>

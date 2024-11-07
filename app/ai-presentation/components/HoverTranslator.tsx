@@ -221,7 +221,7 @@ const MyComponent = React.forwardRef(function MyComponent({ text, isPlaying, tog
 					{!audioURL ? (
 						<>
 							{audioLoading ? (
-								<TailSpin style={{ width: "20px" }} stroke={brandColors.darkBlue} />
+								<TailSpin style={{ width: "20px", margin: "0px 4px" }} stroke={brandColors.darkBlue} />
 							) : (
 								<IconButton
 									onClick={handleAudioGeneration}

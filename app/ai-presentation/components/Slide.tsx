@@ -71,8 +71,8 @@ export const Slide = ({ title, content, isList = false, image = false }: { title
             }
           }
         }}>
-          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-            {(content as string[]).map((item: string, index: number) => (
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'start' }}>
+            {(content as string[])?.map((item: string, index: number) => (
               <HoverAudioTranslator text={item} key={index}>
                 <Typography paragraph sx={{ padding: "2px 10px", background: "#f1f5f9", borderRadius: "4px", margin: "4px", position: "relative" }}>{item}</Typography>
               </HoverAudioTranslator>

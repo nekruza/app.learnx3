@@ -42,20 +42,23 @@ const ClassSignature = () => (
   <Typography variant="h6" paragraph color="white">Teacher Hope's class</Typography>
 );
 
-export const Slide = ({ title, content, isList = false, image = false }: { title: string, content: string | string[], isList?: boolean, image?: boolean }) => {
+export const Slide = ({ title, content, isList = false, image = false, onlyTeacher = false }: { title: string, content: string | string[], isList?: boolean, image?: boolean, onlyTeacher?: boolean }) => {
 
   return (
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
       gap: 1,
+      overflow: "auto",
+      ...(onlyTeacher && { padding: "10px 20px", background: "#ffe5a3e3", borderRadius: "8px" })
     }}>
       <SectionTitle
-        variant="h6"
+        variant={"h6"}
         sx={{
           color: '#9F7AEA',
           borderLeft: '3px solid #9F7AEA',
           paddingLeft: 2,
+          ...(onlyTeacher && { fontSize: "1rem" })
         }}
       >
         {title}
@@ -80,7 +83,7 @@ export const Slide = ({ title, content, isList = false, image = false }: { title
           </Box>
         </List>
       ) : (
-        <Typography paragraph>{content}</Typography>
+        <Typography paragraph sx={{ ...(onlyTeacher && { fontSize: "0.9rem", mb: 0 }) }}>{content}</Typography>
       )}
     </Box>
   );

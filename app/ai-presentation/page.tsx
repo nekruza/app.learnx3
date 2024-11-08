@@ -58,15 +58,13 @@ const PresentationGenerator = () => {
 
   return (
 
-    <Box sx={{ padding: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-
+    <Box sx={{ padding: [4, 6, 10], display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: "center", gap: 4, backgroundColor: "#eeeeff", borderRadius: 2, height: "calc(100vh - 100px)", marginTop: -1 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
         <Typography variant='h4' sx={{ fontWeight: 600, color: '#1e293b' }}>Create a Presentation</Typography>
         <Typography variant='subtitle1' sx={{ color: '#475569' }}>What would you like to create?</Typography>
       </Box>
 
-
-      <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'center', justifyContent: 'center', width: '100%', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', gap: 3, alignItems: 'center', justifyContent: 'center', width: '100%', flexDirection: 'column' }}>
         <Input
           placeholder="Describe what you'd like to make"
           value={topic}
@@ -75,7 +73,7 @@ const PresentationGenerator = () => {
           sx={{
             backgroundColor: 'white',
             padding: '12px 16px',
-            maxWidth: '400px',
+            maxWidth: '680px',
             border: "1px solid #e5e7eb",
             borderRadius: '8px',
             '&::before': { display: 'none' },
@@ -115,12 +113,12 @@ const PresentationGenerator = () => {
           {loading ? <span> <SpinningCircles style={{ width: '16px', height: '16px', marginRight: '4px' }} /> Creating...</span> : <span>🚀 Create Presentation</span>}
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%', maxWidth: '700px', margin: "auto" }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%', maxWidth: '700px', margin: "0px auto", height: "fit-content" }}>
         <Divider sx={{ flexGrow: 1, mx: 2 }} />
         <Typography variant='subtitle1' sx={{ color: '#475569', fontSize: '14px' }}>Example Prompts</Typography>
         <Divider sx={{ flexGrow: 1, mx: 2 }} />
       </Box>
-      <Grid container spacing={2} sx={{ width: '100%', maxWidth: '700px' }}>
+      <Grid container spacing={2} sx={{ width: '100%', maxWidth: '700px', maxHeight: "fit-content" }}>
         {
           ['Past Simple vs Past Continuous', 'Common English Idioms', 'Conditional Sentences', 'Active vs Passive Voice'].map((example, index) => (
             <Grid key={index} item xs={6}>

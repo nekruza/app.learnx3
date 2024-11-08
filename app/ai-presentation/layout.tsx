@@ -3,7 +3,8 @@ import { ArrowBack } from "@mui/icons-material"
 import { brandColors } from "@/components/utils/brandColors"
 import { Button, CssBaseline, Box } from "@mui/material"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import ProtectedRoute from "@/components/auth/ProtectedRoute"
+import SidebarContainer from "@/components/SidebarContainer"
 
 export default function RootLayout({ children }: any) {
   return (
@@ -36,7 +37,11 @@ export default function RootLayout({ children }: any) {
         </Button>
       </Link>
       <CssBaseline />
-      {children}
+      <ProtectedRoute permitArray={["admin", "teacher"]}>
+        <SidebarContainer>
+          {children}
+        </SidebarContainer>
+      </ProtectedRoute>
     </Box>
   )
 }

@@ -88,6 +88,7 @@ export default Navbar
 
 const BoxWrapperStyle = {
 	color: "white",
+	backgroundColor: "white",
 	maxWidth: "none",
 	alignItems: "center",
 	marginBottom: { xs: 3, sm: 5 },

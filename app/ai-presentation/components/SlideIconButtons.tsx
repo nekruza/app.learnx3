@@ -6,6 +6,7 @@ import { isAdminOrTeacher } from "@/components/hooks/userRoles";
 import { useStoreUser } from "@/components/zustand";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import CancelIcon from '@mui/icons-material/Cancel';
 
 interface SlideIconButtonsProps {
   fullscreenSlide: number | null;
@@ -49,17 +50,44 @@ export function SlideIconButtons({
         </IconButton>
       )}
       {isAdminOrTeacher(userInfo) && (
-        <IconButton
-          onClick={toggleEditing}
-          sx={{
-            position: 'absolute',
-            right: 50,
-            top: 10,
-            color: 'rgba(0, 0, 0, 0.6)',
-          }}
-        >
-          {isEditing ? <SaveIcon /> : <EditIcon />}
-        </IconButton>
+        isEditing ? (
+          <>
+            <IconButton
+              onClick={toggleEditing}
+              sx={{
+                position: 'absolute',
+                right: 80,
+                top: 10,
+                color: 'rgba(0, 0, 0, 0.6)',
+              }}
+            >
+              <SaveIcon />
+            </IconButton>
+            <IconButton
+              onClick={toggleEditing}
+              sx={{
+                position: 'absolute',
+                right: 50,
+                top: 10,
+                color: 'rgba(0, 0, 0, 0.6)',
+              }}
+            >
+              <CancelIcon />
+            </IconButton>
+          </>
+        ) : (
+          <IconButton
+            onClick={toggleEditing}
+            sx={{
+              position: 'absolute',
+              right: 50,
+              top: 10,
+              color: 'rgba(0, 0, 0, 0.6)',
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        )
       )}
     </>
   );

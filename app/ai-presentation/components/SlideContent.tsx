@@ -9,6 +9,7 @@ import { useState } from 'react';
 import EditableText from "./EditableText";
 import { useSearchParams } from "next/dist/client/components/navigation";
 import { SlideIconButtons } from "./SlideIconButtons";
+import { useStoreUser } from "@/components/zustand";
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
   marginTop: "4px",
@@ -45,7 +46,7 @@ const BaseBox = styled(Box)({
 });
 
 const ClassSignature = () => (
-  <Typography variant="h6" paragraph color="white">Teacher Hope's class</Typography>
+  <Typography variant="h6" paragraph color="white">Teacher {useStoreUser()?.userInfo?.name || "Anonymous"}'s class</Typography>
 );
 
 export const SlideContent = ({ title, content, isList = false, image = false, onlyTeacher = false }: { title: string, content: string | string[], isList?: boolean, image?: boolean, onlyTeacher?: boolean }) => {
@@ -145,7 +146,7 @@ export const SlideOne = ({ title, content, setFullscreenSlide, fullscreenSlide, 
         mb: 4
       }}>
         <Typography variant="h4" fontWeight={600} color="white">Topic</Typography>
-        <Typography variant="h2" fontWeight={600} color={brandColors.yellow}>{title}</Typography>
+        <EditableText text={title} textStyle={{ fontWeight: 600, color: brandColors.yellow, fontSize: "4rem" }} />
         <ClassSignature />
       </Box>
       <Box sx={{

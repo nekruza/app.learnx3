@@ -1,9 +1,11 @@
 "use client"
 import { brandColors } from "@/components/utils/brandColors";
-import { Box, Card, List, Typography } from "@mui/material";
+import { Box, Card, IconButton, List, Typography } from "@mui/material";
 import { styled } from "@mui/system";
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import Image from "next/image";
 import HoverAudioTranslator from "./HoverTranslator";
+import { NavigationButtons } from "./NavigationButtons";
 
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
@@ -26,8 +28,10 @@ const BaseCard = styled(Card)({
   maxWidth: '1000px',
   display: 'flex',
   justifyContent: 'center',
+  flexDirection: 'column',
   alignItems: 'center',
   borderRadius: '10px',
+  position: 'relative',
 });
 
 const BaseBox = styled(Box)({
@@ -91,8 +95,27 @@ export const Slide = ({ title, content, isList = false, image = false, onlyTeach
 
 
 
-export const SlideOne = ({ title, content }: { title: string, content: string }) => (
-  <BaseCard>
+export const SlideOne = ({ title, content, setFullscreenSlide, fullscreenSlide, totalSlidesCount }: {
+  title: string,
+  content: string,
+  setFullscreenSlide: (index: number) => void,
+  fullscreenSlide: number | null,
+  totalSlidesCount?: number
+}) => (
+  <BaseCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}}>
+    {fullscreenSlide === null && <IconButton
+      onClick={() => setFullscreenSlide(0)}
+      sx={{
+        position: 'absolute',
+        right: 10,
+        top: 10,
+        color: "white",
+
+      }}
+    >
+      <FullscreenIcon />
+    </IconButton>
+    }
     <BaseBox sx={{ justifyContent: 'space-between' }}>
       <Box sx={{
         display: 'flex',
@@ -116,11 +139,34 @@ export const SlideOne = ({ title, content }: { title: string, content: string })
         <Image src="/ai-ppt-images/ai-ppt-page-1.png" alt="ai-ppt-1" width={400} height={350} />
       </Box>
     </BaseBox>
+    {fullscreenSlide !== null && (
+      <NavigationButtons
+        currentSlide={0}
+        totalSlides={totalSlidesCount || 0}
+        setFullscreenSlide={setFullscreenSlide}
+      />
+    )}
   </BaseCard>
 );
 
-export const SlideLast = () => (
-  <BaseCard>
+export const SlideLast = ({ setFullscreenSlide, fullscreenSlide, totalSlidesCount }: {
+  setFullscreenSlide: (index: number) => void,
+  fullscreenSlide: number | null,
+  totalSlidesCount?: number
+}) => (
+  <BaseCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}}>
+    {fullscreenSlide === null && <IconButton
+      onClick={() => setFullscreenSlide(totalSlidesCount || 0)}
+      sx={{
+        position: 'absolute',
+        right: 10,
+        top: 10,
+        color: "white",
+
+      }}
+    >
+      <FullscreenIcon />
+    </IconButton>}
     <BaseBox sx={{
       justifyContent: 'center',
       flexDirection: 'column',
@@ -133,5 +179,12 @@ export const SlideLast = () => (
       <Typography variant="h2" fontWeight={600} color="#e5c643" mb={2}>Thank you!</Typography>
       <ClassSignature />
     </BaseBox>
+    {fullscreenSlide !== null && (
+      <NavigationButtons
+        currentSlide={(totalSlidesCount || 1) - 1}
+        totalSlides={(totalSlidesCount || 1) - 1}
+        setFullscreenSlide={setFullscreenSlide}
+      />
+    )}
   </BaseCard>
 );

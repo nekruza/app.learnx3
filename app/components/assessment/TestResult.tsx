@@ -75,7 +75,7 @@ const TestResult = memo(({ id }: { id: string }) => {
 											margin: "auto",
 											textAlign: "center",
 										}}
-										//
+									//
 									>
 										{item}
 									</TableCell>

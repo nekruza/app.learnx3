@@ -20,7 +20,6 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
 
 const BaseCard = styled(Card)({
   marginTop: 2,
-  marginBottom: 30,
   backgroundImage: 'url(/ai-ppt-images/ai-ppt-bg.png)',
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'center',

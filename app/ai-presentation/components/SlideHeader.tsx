@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Typography, Divider } from '@mui/material';
 import { styled } from '@mui/system';
+import EditableText from './EditableText';
+import { useSearchParams } from 'next/navigation';
 
 interface SlideHeaderProps {
   title: string;
@@ -33,13 +35,15 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 }));
 
 const SlideHeader: React.FC<SlideHeaderProps> = ({ title, subtitle }) => {
+  const searchParams = useSearchParams();
+  const isEditing = searchParams.get('edit') === 'true';
   return (
     <StyledBox>
       <StyledTypography variant="h5">
-        {title}
+        <EditableText text={title} textStyle={{ fontSize: "1.7rem", fontWeight: 600 }} />
       </StyledTypography>
       <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-        {subtitle}
+        <EditableText text={subtitle} textStyle={{ fontSize: "1.1rem" }} />
       </Typography>
       <Divider sx={{ marginY: 1 }} />
     </StyledBox>

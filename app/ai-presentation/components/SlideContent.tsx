@@ -1,12 +1,14 @@
 "use client"
 import { brandColors } from "@/components/utils/brandColors";
-import { Box, Card, IconButton, List, Typography } from "@mui/material";
+import { Box, Card, List, Typography, TextField } from "@mui/material";
 import { styled } from "@mui/system";
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import Image from "next/image";
 import HoverAudioTranslator from "./HoverTranslator";
 import { NavigationButtons } from "./NavigationButtons";
-
+import { useState } from 'react';
+import EditableText from "./EditableText";
+import { useSearchParams } from "next/dist/client/components/navigation";
+import { SlideIconButtons } from "./SlideIconButtons";
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
   marginTop: "4px",
@@ -46,7 +48,12 @@ const ClassSignature = () => (
   <Typography variant="h6" paragraph color="white">Teacher Hope's class</Typography>
 );
 
-export const Slide = ({ title, content, isList = false, image = false, onlyTeacher = false }: { title: string, content: string | string[], isList?: boolean, image?: boolean, onlyTeacher?: boolean }) => {
+export const SlideContent = ({ title, content, isList = false, image = false, onlyTeacher = false }: { title: string, content: string | string[], isList?: boolean, image?: boolean, onlyTeacher?: boolean }) => {
+  const [editedTitle, setEditedTitle] = useState(title);
+  const [editedContent, setEditedContent] = useState(content);
+  const searchParams = useSearchParams();
+  const isEditing = searchParams.get('edit') === 'true';
+
 
   return (
     <Box sx={{
@@ -54,7 +61,8 @@ export const Slide = ({ title, content, isList = false, image = false, onlyTeach
       flexDirection: 'column',
       gap: 1,
       overflow: "auto",
-      ...(onlyTeacher && { padding: "10px 20px", background: "#ffe5a3e3", borderRadius: "8px" })
+      ...(onlyTeacher && { padding: "10px 20px", background: "#ffe5a3e3", borderRadius: "8px" }),
+      position: 'relative'
     }}>
       <SectionTitle
         variant={"h6"}
@@ -65,8 +73,9 @@ export const Slide = ({ title, content, isList = false, image = false, onlyTeach
           ...(onlyTeacher && { fontSize: "1rem" })
         }}
       >
-        {title}
+        <EditableText text={editedTitle} />
       </SectionTitle>
+
       {isList ? (
         <List sx={{
           '& .MuiListItemText-primary': {
@@ -79,15 +88,36 @@ export const Slide = ({ title, content, isList = false, image = false, onlyTeach
           }
         }}>
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'start' }}>
-            {(content as string[])?.map((item: string, index: number) => (
+            {(Array.isArray(editedContent) ? editedContent : []).map((item: string, index: number) => (
               <HoverAudioTranslator text={item} key={index}>
-                <Typography paragraph sx={{ padding: "2px 10px", background: "#f1f5f9", borderRadius: "4px", margin: "4px", position: "relative" }}>{item}</Typography>
+                {isEditing ? (
+                  <TextField
+                    value={item}
+                    onChange={(e) => {
+                      const newContent = [...(editedContent as string[])];
+                      newContent[index] = e.target.value;
+                      setEditedContent(newContent);
+                    }}
+                    size="small"
+                    sx={{ minWidth: "fit-content", width: 'max-content' }}
+                  />
+                ) : (
+                  <Typography paragraph sx={{
+                    padding: "2px 10px",
+                    background: "#f1f5f9",
+                    borderRadius: "4px",
+                    margin: "4px",
+                    position: "relative"
+                  }}>
+                    {item}
+                  </Typography>
+                )}
               </HoverAudioTranslator>
             ))}
           </Box>
         </List>
       ) : (
-        <Typography paragraph sx={{ ...(onlyTeacher && { fontSize: "0.9rem", mb: 0 }) }}>{content}</Typography>
+        <EditableText text={editedContent as string} textStyle={onlyTeacher && { fontSize: "0.9rem", mb: 0 }} />
       )}
     </Box>
   );
@@ -103,19 +133,7 @@ export const SlideOne = ({ title, content, setFullscreenSlide, fullscreenSlide, 
   totalSlidesCount?: number
 }) => (
   <BaseCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}}>
-    {fullscreenSlide === null && <IconButton
-      onClick={() => setFullscreenSlide(0)}
-      sx={{
-        position: 'absolute',
-        right: 10,
-        top: 10,
-        color: "white",
-
-      }}
-    >
-      <FullscreenIcon />
-    </IconButton>
-    }
+    <SlideIconButtons fullscreenSlide={fullscreenSlide} index={0} setFullscreenSlide={setFullscreenSlide} />
     <BaseBox sx={{ justifyContent: 'space-between' }}>
       <Box sx={{
         display: 'flex',
@@ -155,18 +173,7 @@ export const SlideLast = ({ setFullscreenSlide, fullscreenSlide, totalSlidesCoun
   totalSlidesCount?: number
 }) => (
   <BaseCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}}>
-    {fullscreenSlide === null && <IconButton
-      onClick={() => setFullscreenSlide(totalSlidesCount || 0)}
-      sx={{
-        position: 'absolute',
-        right: 10,
-        top: 10,
-        color: "white",
-
-      }}
-    >
-      <FullscreenIcon />
-    </IconButton>}
+    <SlideIconButtons fullscreenSlide={fullscreenSlide} index={totalSlidesCount || 0} setFullscreenSlide={setFullscreenSlide} />
     <BaseBox sx={{
       justifyContent: 'center',
       flexDirection: 'column',

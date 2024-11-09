@@ -21,7 +21,13 @@ export default function EditableText({ text, textStyle }: {
       value={editedText}
       onChange={handleChange}
       size="small"
-      sx={{ ...textStyle, width: 'max-content', minWidth: 500 }}
+      sx={{
+        width: 'max-content',
+        minWidth: 400,
+        '& .MuiInputBase-input': {
+          ...textStyle,
+        }
+      }}
     />
   ) : (
     <Typography sx={textStyle}>{editedText}</Typography>

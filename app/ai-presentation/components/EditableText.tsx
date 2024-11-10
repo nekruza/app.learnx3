@@ -23,7 +23,8 @@ export default function EditableText({ text, textStyle }: {
       size="small"
       sx={{
         width: 'max-content',
-        minWidth: 400,
+        minWidth: 300,
+        maxWidth: 400,
         '& .MuiInputBase-input': {
           ...textStyle,
         }

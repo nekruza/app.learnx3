@@ -17,7 +17,7 @@ const Presentation = () => {
     <Box sx={{ padding: 4, display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 4, height: '100vh', overflowY: 'auto', backgroundColor: "#eeeeff", borderRadius: 2, mt: -1 }}>
 
       {/* Slide 1 */}
-      <SlideOne title={presentationContent?.topic} content={"this is the introduction"} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} />
+      <SlideOne title={presentationContent?.topic} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} />
 
       {/* Slides */}
       {presentationContent?.slides?.map((slide: any, index: number) => (
@@ -38,7 +38,7 @@ const Presentation = () => {
           padding: 4
         }}>
           {fullscreenSlide === 0 ? (
-            <SlideOne totalSlidesCount={presentationContent?.slides?.length + 2} title={presentationContent?.topic} content={"this is the introduction"} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} />
+            <SlideOne totalSlidesCount={presentationContent?.slides?.length + 2} title={presentationContent?.topic} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} />
           ) : fullscreenSlide === presentationContent?.slides?.length + 1 ? (
             <SlideLast totalSlidesCount={presentationContent?.slides?.length + 2} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} />
           ) : (

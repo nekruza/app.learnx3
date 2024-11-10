@@ -3,11 +3,12 @@ import SlideHeader from "./SlideHeader";
 import { isAdminOrTeacher } from "@/components/hooks/userRoles";
 import { NavigationButtons } from '../components/NavigationButtons';
 import { styled } from '@mui/system';
-import { SlideFirstContent } from "./SlideFirstContent";
 import { SlideContent } from "./SlideContent";
 import presentationContent from '../utils/presentationContent.json';
 import { SlideIconButtons } from "./SlideIconButtons";
 import EditableText from "./EditableText";
+import SlideImage from "./SlideImage";
+import { PresentationPage } from "./PresentationReusables";
 
 
 const SlideCard = styled(Card)(({ theme }) => ({
@@ -16,9 +17,8 @@ const SlideCard = styled(Card)(({ theme }) => ({
   backdropFilter: 'blur(10px)',
   border: '1px solid rgba(255, 255, 255, 0.2)',
   width: '100%',
-  height: '100%',
-  minHeight: "600px",
-  maxHeight: "700px",
+  minHeight: "750px",
+  height: 'fit-content',
   maxWidth: '1000px',
   background: 'white',
 }));
@@ -26,6 +26,9 @@ const SlideCard = styled(Card)(({ theme }) => ({
 
 
 export default function PresentationSlide({ index, setFullscreenSlide, slide, fullscreenSlide, userInfo }: { index: number, setFullscreenSlide: (index: number) => void, slide: any, fullscreenSlide: number | null, userInfo: any }): JSX.Element {
+
+  const imageOne = "/ai-ppt-images/ai-ppt-lesson-goal.webp"
+  const imageTwo = "/ai-ppt-images/ai-ppt-teacher-teaching.webp"
 
   return (
     <SlideCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}
@@ -35,12 +38,15 @@ export default function PresentationSlide({ index, setFullscreenSlide, slide, fu
         display: 'flex',
         gap: 1,
         height: '100%',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
       }}>
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
           gap: 1,
           padding: '10px',
+          flex: 2,
         }}>
           <SlideHeader title={slide.title} subtitle={slide.subtitle} />
 
@@ -53,6 +59,7 @@ export default function PresentationSlide({ index, setFullscreenSlide, slide, fu
               flexDirection: 'column',
               padding: '0px 20px 10px',
               gap: 1,
+              flex: 2,
             }}>
               {slide.content.text && slide.content.text.map((paragraph: string, index: number) => (
                 <EditableText text={paragraph} />
@@ -142,49 +149,19 @@ export default function PresentationSlide({ index, setFullscreenSlide, slide, fu
                 <SlideContent title="Teacher Closing" content={slide.content.for_teacher_closing} onlyTeacher={true} />
               )}
             </Box>
-            {index === 1 && <Box sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'start',
-              maxHeight: '500px',
-              overflow: 'hidden',
-              marginRight: '10px',
-            }}>
-              <img style={{
-                width: '100%',
-                height: 'auto',
-                maxWidth: '100%',
-                maxHeight: '100%',
-                objectFit: 'contain',
-                borderRadius: '6px',
-              }} src="/ai-ppt-images/ai-ppt-lesson-goal.webp" alt="ai-ppt-1" />
-            </Box>}
+            {imageOne && <SlideImage currentImage={imageOne} onImageUpdate={() => { }} />}
           </Box>
         </Box>
-
-        {index === 0 && <img style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '400px',
-          background: "red",
-          backgroundImage: 'url(/ai-ppt-images/ai-ppt-teacher-teaching.webp)',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          margin: '10px',
-          borderRadius: '6px',
-          marginRight: '10px',
-        }} />}
-
+        <PresentationPage display={fullscreenSlide === null} currentSlide={index} totalSlides={presentationContent?.slides?.length + 2} />
       </CardContent>
-      {fullscreenSlide !== null && (
-        <NavigationButtons
-          currentSlide={index}
-          totalSlides={presentationContent?.slides?.length + 2}
-          setFullscreenSlide={setFullscreenSlide}
-        />
-      )}
+
+
+      <NavigationButtons
+        currentSlide={index}
+        totalSlides={presentationContent?.slides?.length + 2}
+        display={fullscreenSlide !== null}
+        setFullscreenSlide={setFullscreenSlide}
+      />
     </SlideCard >
   );
 }

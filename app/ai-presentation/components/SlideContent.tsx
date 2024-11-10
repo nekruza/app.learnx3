@@ -10,6 +10,7 @@ import EditableText from "./EditableText";
 import { useSearchParams } from "next/dist/client/components/navigation";
 import { SlideIconButtons } from "./SlideIconButtons";
 import { useStoreUser } from "@/components/zustand";
+import SlideImage from "./SlideImage";
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
   marginTop: "4px",
@@ -25,8 +26,8 @@ const BaseCard = styled(Card)({
   backgroundPosition: 'center',
   backgroundSize: 'cover',
   width: '100%',
-  minHeight: "500px",
-  maxHeight: "600px",
+  minHeight: "600px",
+  maxHeight: "700px",
   maxWidth: '1000px',
   display: 'flex',
   justifyContent: 'center',
@@ -125,9 +126,8 @@ export const SlideContent = ({ title, content, isList = false, image = false, on
 
 
 
-export const SlideOne = ({ title, content, setFullscreenSlide, fullscreenSlide, totalSlidesCount }: {
+export const SlideOne = ({ title, setFullscreenSlide, fullscreenSlide, totalSlidesCount }: {
   title: string,
-  content: string,
   setFullscreenSlide: (index: number) => void,
   fullscreenSlide: number | null,
   totalSlidesCount?: number
@@ -140,30 +140,22 @@ export const SlideOne = ({ title, content, setFullscreenSlide, fullscreenSlide, 
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'start',
-        gap: 1,
-        padding: 4,
-        mb: 4
+        padding: 8,
+        flex: 2,
       }}>
         <Typography variant="h4" fontWeight={600} color="white">Topic</Typography>
         <EditableText text={title} textStyle={{ fontWeight: 600, color: brandColors.yellow, fontSize: "4rem" }} />
         <ClassSignature />
       </Box>
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 2,
-      }}>
-        <Image src="/ai-ppt-images/ai-ppt-page-1.png" alt="ai-ppt-1" width={400} height={350} />
-      </Box>
+      <SlideImage currentImage={"/ai-ppt-images/ai-ppt-page-1.png"} onImageUpdate={() => { }} />
     </BaseBox>
-    {fullscreenSlide !== null && (
-      <NavigationButtons
-        currentSlide={0}
-        totalSlides={totalSlidesCount || 0}
-        setFullscreenSlide={setFullscreenSlide}
-      />
-    )}
+
+    <NavigationButtons
+      currentSlide={0}
+      display={fullscreenSlide !== null}
+      totalSlides={totalSlidesCount || 0}
+      setFullscreenSlide={setFullscreenSlide}
+    />
   </BaseCard>
 );
 
@@ -186,12 +178,11 @@ export const SlideLast = ({ setFullscreenSlide, fullscreenSlide, totalSlidesCoun
       <Typography variant="h2" fontWeight={600} color="#e5c643" mb={2}>Thank you!</Typography>
       <ClassSignature />
     </BaseBox>
-    {fullscreenSlide !== null && (
-      <NavigationButtons
-        currentSlide={(totalSlidesCount || 1) - 1}
-        totalSlides={(totalSlidesCount || 1) - 1}
-        setFullscreenSlide={setFullscreenSlide}
-      />
-    )}
+    <NavigationButtons
+      display={fullscreenSlide !== null}
+      currentSlide={(totalSlidesCount || 1) - 1}
+      totalSlides={(totalSlidesCount || 1)}
+      setFullscreenSlide={setFullscreenSlide}
+    />
   </BaseCard>
 );

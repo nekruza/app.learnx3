@@ -3,4 +3,5 @@ export const constants = {
 	FIREBASE_STORAGE_STUDENT_IMAGE_PATH: "studentImages",
 	FIREBASE_STORAGE_TEACHER_IMAGE_PATH: "teacherImages",
 	FIREBASE_STORAGE_AVATAR_USER_AUDIOS_PATH: "avatarUserAudios",
+	FIREBASE_STORAGE_PRESENTATION_IMAGE_PATH: "presentationImages",
 }

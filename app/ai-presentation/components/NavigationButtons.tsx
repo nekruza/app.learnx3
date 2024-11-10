@@ -1,21 +1,15 @@
-import { brandColors } from "@/components/utils/brandColors";
-import { Box, IconButton, Typography } from "@mui/material";
-import dayjs from "dayjs";
+import { Box, IconButton } from "@mui/material";
+import { PresentationDate, PresentationPage } from "./PresentationReusables";
 
-export const NavigationButtons = ({ currentSlide, totalSlides, setFullscreenSlide }: {
+export const NavigationButtons = ({ display, currentSlide, totalSlides, setFullscreenSlide }: {
+  display: boolean,
   currentSlide: number,
   totalSlides: number,
   setFullscreenSlide: (index: number) => void
 }) => (
-  <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', position: 'absolute', bottom: 20, gap: 2, padding: '0px 40px' }}>
-    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
-      <Typography fontSize="0.9rem" color={brandColors.grey}>
-        {dayjs().format('D MMM YYYY')}
-      </Typography>
-    </div>
-    <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-      <Typography fontSize="1rem" margin="0px 10px" color={brandColors.grey}>{currentSlide + 1}</Typography>
-    </Box>
+  <Box sx={{ width: '100%', display: display ? 'flex' : "none", alignItems: 'center', position: 'absolute', bottom: 20, gap: 2, padding: '0px 40px' }}>
+    <PresentationDate />
+    <PresentationPage display={display} currentSlide={currentSlide} totalSlides={totalSlides} />
     <Box sx={{ flex: 1, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
       {currentSlide > 0 && (
         <IconButton

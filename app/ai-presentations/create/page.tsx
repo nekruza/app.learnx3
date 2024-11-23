@@ -58,7 +58,7 @@ const PresentationGenerator = () => {
       });
 
       setPresentation(generatedContent);
-      router.push(`/ai-presentation/${presentationDoc.id}`);
+      router.push(`/ai-presentations/${presentationDoc.id}`);
     } catch (error) {
       console.error('Error generating presentation:', error);
     } finally {

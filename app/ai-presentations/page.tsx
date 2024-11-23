@@ -27,7 +27,6 @@ const PresentationList = () => {
     refetchOnWindowFocus: false,
   })
 
-  console.log(presentationsList)
 
   if (isLoading) return <LoadingPage />
   if (isError) return <ErrorPage />

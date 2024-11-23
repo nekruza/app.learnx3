@@ -2,10 +2,8 @@
 import { brandColors } from "@/components/utils/brandColors";
 import { Box, Card, List, Typography, TextField } from "@mui/material";
 import { styled } from "@mui/system";
-import Image from "next/image";
 import HoverAudioTranslator from "./HoverTranslator";
 import { NavigationButtons } from "./NavigationButtons";
-import { useState } from 'react';
 import EditableText from "./EditableText";
 import { useSearchParams } from "next/dist/client/components/navigation";
 import { SlideIconButtons } from "./SlideIconButtons";
@@ -49,9 +47,7 @@ const ClassSignature = () => (
   <Typography variant="h6" paragraph color="white">Teacher {useStoreUser()?.userInfo?.name || "Anonymous"}'s class</Typography>
 );
 
-export const SlideContent = ({ title, content, isList = false, image = false, onlyTeacher = false }: { title: string, content: string | string[], isList?: boolean, image?: boolean, onlyTeacher?: boolean }) => {
-  const [editedTitle, setEditedTitle] = useState(title);
-  const [editedContent, setEditedContent] = useState(content);
+export const SlideContent = ({ title, content, isList = false, onlyTeacher = false, path = [] }: { title: string, content: string | string[], isList?: boolean, image?: boolean, onlyTeacher?: boolean, path?: string[] }) => {
   const searchParams = useSearchParams();
   const isEditing = searchParams.get('edit') === 'true';
 
@@ -74,7 +70,7 @@ export const SlideContent = ({ title, content, isList = false, image = false, on
           ...(onlyTeacher && { fontSize: "1rem" })
         }}
       >
-        <EditableText text={editedTitle} />
+        {title}
       </SectionTitle>
 
       {isList ? (
@@ -89,19 +85,10 @@ export const SlideContent = ({ title, content, isList = false, image = false, on
           }
         }}>
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'start' }}>
-            {(Array.isArray(editedContent) ? editedContent : []).map((item: string, index: number) => (
+            {(Array.isArray(content) ? content : []).map((item: string, index: number) => (
               <HoverAudioTranslator text={item} key={index}>
                 {isEditing ? (
-                  <TextField
-                    value={item}
-                    onChange={(e) => {
-                      const newContent = [...(editedContent as string[])];
-                      newContent[index] = e.target.value;
-                      setEditedContent(newContent);
-                    }}
-                    size="small"
-                    sx={{ minWidth: "fit-content", width: 'max-content' }}
-                  />
+                  <EditableText text={item} path={path ? [...path, index.toString()] : [index.toString()]} />
                 ) : (
                   <Typography paragraph sx={{
                     padding: "2px 10px",
@@ -118,7 +105,7 @@ export const SlideContent = ({ title, content, isList = false, image = false, on
           </Box>
         </List>
       ) : (
-        <EditableText text={editedContent as string} textStyle={onlyTeacher && { fontSize: "0.9rem", mb: 0 }} />
+        <EditableText path={path || []} text={content as string} textStyle={onlyTeacher && { fontSize: "0.9rem", mb: 0 }} />
       )}
     </Box>
   );
@@ -126,43 +113,46 @@ export const SlideContent = ({ title, content, isList = false, image = false, on
 
 
 
-export const SlideOne = ({ title, setFullscreenSlide, fullscreenSlide, totalSlidesCount }: {
+export const SlideOne = ({ title, setFullscreenSlide, fullscreenSlide, totalSlidesCount, path }: {
   title: string,
   setFullscreenSlide: (index: number) => void,
   fullscreenSlide: number | null,
-  totalSlidesCount?: number
-}) => (
-  <BaseCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}}>
-    <SlideIconButtons fullscreenSlide={fullscreenSlide} index={0} setFullscreenSlide={setFullscreenSlide} />
-    <BaseBox sx={{ justifyContent: 'space-between' }}>
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'start',
-        padding: 8,
-        flex: 2,
-      }}>
-        <Typography variant="h4" fontWeight={600} color="white">Topic</Typography>
-        <EditableText text={title} textStyle={{ fontWeight: 600, color: brandColors.yellow, fontSize: "4rem" }} />
-        <ClassSignature />
-      </Box>
-      <SlideImage currentImage={"/ai-ppt-images/ai-ppt-page-1.png"} onImageUpdate={() => { }} />
-    </BaseBox>
+  totalSlidesCount?: number,
+  path: string[],
+}) => {
+  return (
+    <BaseCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}}>
+      <SlideIconButtons fullscreenSlide={fullscreenSlide} index={0} setFullscreenSlide={setFullscreenSlide} />
+      <BaseBox sx={{ justifyContent: 'space-between' }}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'start',
+          padding: 8,
+          flex: 2,
+        }}>
+          <Typography variant="h4" fontWeight={600} color="white">Topic</Typography>
+          <EditableText text={title} path={path} textStyle={{ fontWeight: 600, color: brandColors.yellow, fontSize: "4rem", lineHeight: "1.2" }} />
+          <ClassSignature />
+        </Box>
+        <SlideImage currentImage={"/ai-ppt-images/ai-ppt-page-1.png"} />
+      </BaseBox>
 
-    <NavigationButtons
-      currentSlide={0}
-      display={fullscreenSlide !== null}
-      totalSlides={totalSlidesCount || 0}
-      setFullscreenSlide={setFullscreenSlide}
-    />
-  </BaseCard>
-);
+      <NavigationButtons
+        currentSlide={0}
+        display={fullscreenSlide !== null}
+        totalSlides={totalSlidesCount || 0}
+        setFullscreenSlide={setFullscreenSlide}
+      />
+    </BaseCard>
+  );
+}
 
 export const SlideLast = ({ setFullscreenSlide, fullscreenSlide, totalSlidesCount }: {
   setFullscreenSlide: (index: number) => void,
   fullscreenSlide: number | null,
-  totalSlidesCount?: number
+  totalSlidesCount?: number,
 }) => (
   <BaseCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}}>
     <SlideIconButtons fullscreenSlide={fullscreenSlide} index={totalSlidesCount || 0} setFullscreenSlide={setFullscreenSlide} />

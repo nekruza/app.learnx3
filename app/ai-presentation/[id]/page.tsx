@@ -3,25 +3,64 @@ import { useState } from 'react';
 import { Box, } from '@mui/material';
 import { SlideOne, SlideLast } from '../components/SlideContent';
 import { usePresentationStore, useStoreUser } from '@/components/zustand';
-import presentationContent from '../utils/presentationContent.json';
 import FullScreenSlideModal from '../components/FullScreenSlideModal';
 import PresentationSlide from '../components/PresentationSlide';
+import ApiServices from '@/api/ApiServices';
+import ErrorPage from '@/errorpage';
+import { useQuery } from '@tanstack/react-query';
+import LoadingPage from '@/components/LoadingPage';
 
 
-const Presentation = () => {
-  const { presentation } = usePresentationStore();
+interface SlideType {
+  title: string;
+  subtitle: string;
+  content: {
+    [key: string]: string | string[];
+  };
+}
+
+
+interface PresentationContent {
+  topic: string;
+  slides: SlideType[];
+}
+
+
+const Presentation = ({ params }: { params: { id: string } }) => {
   const { userInfo } = useStoreUser();
   const [fullscreenSlide, setFullscreenSlide] = useState<number | null>(null);
+  const { presentation, setPresentation } = usePresentationStore()
+
+  const { apiRequest } = ApiServices()
+  const id = params.id
+  const {
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: [`presentation-${id}`],
+    queryFn: () => apiRequest("GET", null, { collectionName: "presentations", uid: id }),
+    refetchOnWindowFocus: false,
+    onSuccess: (data) => {
+      if (data?.data) {
+        setPresentation(data?.data)
+      }
+    }
+  })
+
+  const presentationContent: PresentationContent = presentation?.content
+
+  if (isLoading) return <LoadingPage />
+  if (isError) return <ErrorPage />
 
   return (
     <Box sx={{ padding: 4, display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 4, height: '100vh', overflowY: 'auto', backgroundColor: "#eeeeff", borderRadius: 2, mt: -1 }}>
 
       {/* Slide 1 */}
-      <SlideOne title={presentationContent?.topic} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} />
+      <SlideOne title={presentationContent?.topic} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} path={["topic"]} />
 
       {/* Slides */}
       {presentationContent?.slides?.map((slide: any, index: number) => (
-        <PresentationSlide key={index} index={index + 1} setFullscreenSlide={setFullscreenSlide} slide={slide} userInfo={userInfo} fullscreenSlide={fullscreenSlide} />
+        <PresentationSlide key={index} path={["slides", index.toString()]} index={index + 1} setFullscreenSlide={setFullscreenSlide} slide={slide} userInfo={userInfo} fullscreenSlide={fullscreenSlide} />
       ))}
 
       {/* Slide Last */}
@@ -38,7 +77,7 @@ const Presentation = () => {
           padding: 4
         }}>
           {fullscreenSlide === 0 ? (
-            <SlideOne totalSlidesCount={presentationContent?.slides?.length + 2} title={presentationContent?.topic} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} />
+            <SlideOne path={["topic"]} totalSlidesCount={presentationContent?.slides?.length + 2} title={presentationContent?.topic} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} />
           ) : fullscreenSlide === presentationContent?.slides?.length + 1 ? (
             <SlideLast totalSlidesCount={presentationContent?.slides?.length + 2} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} />
           ) : (

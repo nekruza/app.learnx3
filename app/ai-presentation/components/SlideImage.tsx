@@ -3,7 +3,7 @@ import { Box, Button, IconButton, Stack, TextField, Typography } from '@mui/mate
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/components/firebaseX';
 import { constants } from '@/components/constants/constants';
-import { useStoreUser } from '@/components/zustand';
+import { usePresentationStore, useStoreUser } from '@/components/zustand';
 import { v4 as uuidv4 } from 'uuid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSearchParams } from 'next/dist/client/components/navigation';
@@ -11,19 +11,28 @@ import OpenAI from 'openai';
 import { base64ToBlob } from '@/components/helpers/base64ToBlob';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DividerWithText from './DividerWithText';
+import { updateNestedContent } from '../helpers/updateNestedContent';
 
 interface SlideImageProps {
   currentImage?: string;
-  onImageUpdate: (imageUrl: string, imagePath: string) => void;
+  path?: string[];
 }
 
-const SlideImage = ({ currentImage, onImageUpdate }: SlideImageProps) => {
+const SlideImage = ({ currentImage, path }: SlideImageProps) => {
   const [image, setImage] = useState<string>(currentImage || '');
   const [loading, setLoading] = useState(false);
   const { userInfo } = useStoreUser();
   const searchParams = useSearchParams();
   const isEditing = searchParams.get('edit') === 'true';
   const [imagePrompt, setImagePrompt] = useState<string>('');
+
+  const { presentation, setPresentation } = usePresentationStore();
+
+  const onImageUpdate = (imageUrl: string) => {
+    setImage(imageUrl);
+    const updatedPresentation = updateNestedContent({ path, value: imageUrl, presentation });
+    setPresentation(updatedPresentation);
+  }
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -42,7 +51,7 @@ const SlideImage = ({ currentImage, onImageUpdate }: SlideImageProps) => {
       const downloadUrl = await getDownloadURL(storageRef);
 
       setImage(downloadUrl);
-      onImageUpdate(downloadUrl, imagePath);
+      onImageUpdate(downloadUrl);
     } catch (error) {
       console.error('Error uploading image:', error);
     } finally {
@@ -78,7 +87,7 @@ const SlideImage = ({ currentImage, onImageUpdate }: SlideImageProps) => {
       const downloadUrl = await getDownloadURL(storageRef);
 
       setImage(downloadUrl);
-      onImageUpdate(downloadUrl, imagePath);
+      onImageUpdate(downloadUrl);
     } catch (error) {
       console.error('Error generating image:', error);
     } finally {
@@ -88,7 +97,7 @@ const SlideImage = ({ currentImage, onImageUpdate }: SlideImageProps) => {
 
   const handleDeleteImage = () => {
     setImage('');
-    onImageUpdate('', '');
+    onImageUpdate('');
   };
 
   return (

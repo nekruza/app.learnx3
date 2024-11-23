@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 interface SlideHeaderProps {
   title: string;
   subtitle: string;
+  path: string[];
 }
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -34,16 +35,16 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const SlideHeader: React.FC<SlideHeaderProps> = ({ title, subtitle }) => {
+const SlideHeader: React.FC<SlideHeaderProps> = ({ title, subtitle, path }) => {
   const searchParams = useSearchParams();
   const isEditing = searchParams.get('edit') === 'true';
   return (
     <StyledBox>
       <StyledTypography variant="h5">
-        <EditableText text={title} textStyle={{ fontSize: "1.7rem", fontWeight: 600 }} />
+        <EditableText text={title} path={path ? [...path, "title"] : ["title"]} textStyle={{ fontSize: "1.7rem", fontWeight: 600 }} />
       </StyledTypography>
       <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-        <EditableText text={subtitle} textStyle={{ fontSize: "1.1rem" }} />
+        <EditableText text={subtitle} path={path ? [...path, "subtitle"] : ["subtitle"]} textStyle={{ fontSize: "1.1rem" }} />
       </Typography>
       <Divider sx={{ marginY: 1 }} />
     </StyledBox>

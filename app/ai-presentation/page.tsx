@@ -5,19 +5,21 @@ import OpenAiFina from '@/components/utils/OpenAiFina';
 import presentationSchema from './utils/presentationSchema.json';
 import presentationContent from './utils/presentationContent.json';
 import { PresentationContent } from './utils/type';
-import { usePresentationStore } from '@/components/zustand';
+import { usePresentationStore, useStoreUser } from '@/components/zustand';
 import { useRouter } from 'next/navigation';
 import { brandColors } from '@/components/utils/brandColors';
 import { SpinningCircles } from 'react-loading-icons';
+import { addDoc, collection, setDoc } from 'firebase/firestore';
+import { db } from '@/components/firebaseX';
 
 
 const PresentationGenerator = () => {
   const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
-  const { setPresentation } = usePresentationStore();
+  const { presentation, setPresentation } = usePresentationStore();
   const [englishLevel, setEnglishLevel] = useState<'beginner' | 'intermediate' | 'advanced'>('intermediate');
   const router = useRouter();
-
+  const { userInfo } = useStoreUser();
   const presentation_schema = JSON.stringify(presentationContent);
   const generatePresentation = async () => {
     setLoading(true);
@@ -47,8 +49,16 @@ const PresentationGenerator = () => {
 
       const generatedContent: PresentationContent = JSON.parse(response.choices[0].message.content || '');
 
+      const presentationDoc = await addDoc(collection(db, "presentations"), {
+        content: generatedContent,
+        englishLevel,
+        createdAt: new Date().toISOString(),
+        createdById: userInfo.uid,
+        createdByName: userInfo.name,
+      });
+
       setPresentation(generatedContent);
-      router.push(`/ai-presentation/1`);
+      router.push(`/ai-presentation/${presentationDoc.id}`);
     } catch (error) {
       console.error('Error generating presentation:', error);
     } finally {

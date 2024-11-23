@@ -1,25 +1,33 @@
 "use client"
-import { useState } from "react";
+import { useCallback, useRef } from "react";
 import { TextField, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
+import { usePresentationStore } from "@/components/zustand";
+import { updateNestedContent } from "../helpers/updateNestedContent";
 
-export default function EditableText({ text, textStyle }: {
+const EditableText = ({ text, textStyle, path }: {
   text: string,
   textStyle?: any,
-}) {
+  path: string[],
+}) => {
+  const { presentation, setPresentation } = usePresentationStore();
   const searchParams = useSearchParams();
   const isEditing = searchParams.get('edit') === 'true';
-  const [editedText, setEditedText] = useState(text);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedText(e.target.value);
-  };
-
+  const handleBlur = useCallback(() => {
+    if (inputRef.current) {
+      const newValue = inputRef.current.value;
+      const updatedPresentation = updateNestedContent({ path, value: newValue, presentation });
+      setPresentation(updatedPresentation);
+    }
+  }, [path, setPresentation]);
 
   return isEditing ? (
     <TextField
-      value={editedText}
-      onChange={handleChange}
+      inputRef={inputRef}
+      defaultValue={text}
+      onBlur={handleBlur}
       size="small"
       sx={{
         width: 'max-content',
@@ -31,6 +39,10 @@ export default function EditableText({ text, textStyle }: {
       }}
     />
   ) : (
-    <Typography sx={textStyle}>{editedText}</Typography>
+    <Typography sx={textStyle}>{text}</Typography>
   );
 }
+
+EditableText.displayName = 'EditableText';
+
+export default EditableText;

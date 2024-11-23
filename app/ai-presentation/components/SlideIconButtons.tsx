@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -9,8 +9,9 @@ import { useRouter } from "next/navigation";
 import CancelIcon from '@mui/icons-material/Cancel';
 import ApiServices from "@/api/ApiServices";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { LoadingSpinners } from "@/components/constants/loadingSpinners";
 import SpinningCircles from "react-loading-icons/dist/esm/components/spinning-circles";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
 
 interface SlideIconButtonsProps {
   fullscreenSlide: number | null;
@@ -46,15 +47,16 @@ export function SlideIconButtons({
     }
   )
 
-  const savePresentationOnFirebase = (updatedPresentation: any) => {
+  const notify = () => toast.success("Presentation successfully edited!");
 
-  }
+
 
   const toggleEditing = () => {
     const params = new URLSearchParams(searchParams.toString());
     if (isEditing) {
       params.delete('edit');
       savePresentation()
+      notify()
     } else {
       params.set('edit', 'true');
     }
@@ -99,7 +101,9 @@ export function SlideIconButtons({
               <SaveIcon />
             </IconButton>
             <IconButton
-              onClick={toggleEditing}
+              onClick={() => {
+                toggleEditing()
+              }}
               sx={{
                 position: 'absolute',
                 right: 50,

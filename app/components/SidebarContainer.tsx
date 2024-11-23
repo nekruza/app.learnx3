@@ -26,7 +26,13 @@ function SidebarContainer({ children }: { children: React.ReactNode }) {
 					}}
 				>
 					<Sidebar />
-					<Box display={"flex"} flexDirection={"column"} justifyContent={"space-between"} width={"100%"} backgroundColor={"white"}>
+					<Box sx={{
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "space-between",
+						width: "100%",
+						backgroundColor: "white"
+					}}>
 						<Box sx={BoxStyle}>
 							<Navbar />
 							{children}

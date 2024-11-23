@@ -15,6 +15,7 @@ import VerifiedIcon from "@mui/icons-material/Verified"
 import AppsIcon from "@mui/icons-material/Apps"
 import SidebarItem from "./SidebarItem"
 import FaceRetouchingNaturalIcon from "@mui/icons-material/FaceRetouchingNatural"
+import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 
 function sidebar() {
 	const pathname = usePathname()
@@ -95,6 +96,12 @@ const dataTeacher = () => {
 			icon: <AppsIcon sx={{ width: 30, height: 30 }} />,
 		},
 		{
+			name: "Presentations",
+			href: "/ai-presentations",
+			link: "/ai-presentations",
+			icon: <AutoAwesomeMosaicIcon sx={{ width: 30, height: 30 }} />,
+		},
+		{
 			name: "Topics",
 			href: "/speak",
 			link: "/speak",
@@ -169,6 +176,12 @@ const dataAdmin = () => {
 			href: "/lessons",
 			link: "/lessons",
 			icon: <AppsIcon sx={{ width: 30, height: 30 }} />,
+		},
+		{
+			name: "Presentations",
+			href: "/ai-presentations",
+			link: "/ai-presentations",
+			icon: <AutoAwesomeMosaicIcon sx={{ width: 30, height: 30 }} />,
 		},
 		{
 			name: "All Students",

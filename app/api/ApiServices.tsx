@@ -56,18 +56,18 @@ function ApiServices() {
 	}
 
 	async function apiRequest(
-		method: "POST" | "GET" | "PATCH" | "DELETE" = "GET",
+		method: "POST" | "GET" | "PATCH" | "PUT" | "DELETE" = "GET",
 		body: any = null,
 		params: ApiRequestParams
 	) {
 		const updatedBody =
 			method === "POST"
 				? {
-						...body,
-						createdAt: `${new Date().toISOString()}`,
-						createdById: `${userInfo.uid}`,
-						createdByName: `${userInfo.name}`,
-				  }
+					...body,
+					createdAt: `${new Date().toISOString()}`,
+					createdById: `${userInfo.uid}`,
+					createdByName: `${userInfo.name}`,
+				}
 				: body
 		return await axios({
 			method,

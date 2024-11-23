@@ -3,10 +3,14 @@ import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import { isAdminOrTeacher } from "@/components/hooks/userRoles";
-import { useStoreUser } from "@/components/zustand";
-import { useSearchParams } from "next/navigation";
+import { usePresentationStore, useStoreUser } from "@/components/zustand";
+import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import CancelIcon from '@mui/icons-material/Cancel';
+import ApiServices from "@/api/ApiServices";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { LoadingSpinners } from "@/components/constants/loadingSpinners";
+import SpinningCircles from "react-loading-icons/dist/esm/components/spinning-circles";
 
 interface SlideIconButtonsProps {
   fullscreenSlide: number | null;
@@ -20,19 +24,50 @@ export function SlideIconButtons({
   setFullscreenSlide,
 }: SlideIconButtonsProps) {
   const { userInfo } = useStoreUser();
+  const queryClient = useQueryClient()
   const router = useRouter();
   const searchParams = useSearchParams();
   const isEditing = searchParams.get('edit') === 'true';
+  const { presentation } = usePresentationStore();
+
+  const params = useParams()
+
+  const { apiRequest } = ApiServices()
+  const id = params.id
+
+  const {
+    mutate: savePresentation,
+    isLoading: isLoadingSave,
+    isError: isErrorSave,
+  } = useMutation(
+    () => apiRequest("PUT", presentation, { collectionName: "presentations", uid: id as string }),
+    {
+      onSuccess: () => queryClient.invalidateQueries([`presentation-${id}`]),
+    }
+  )
+
+  const savePresentationOnFirebase = (updatedPresentation: any) => {
+
+  }
 
   const toggleEditing = () => {
     const params = new URLSearchParams(searchParams.toString());
     if (isEditing) {
       params.delete('edit');
+      savePresentation()
     } else {
       params.set('edit', 'true');
     }
     router.push(`?${params.toString()}`);
   };
+
+  if (isLoadingSave) {
+    return <SpinningCircles />
+  }
+
+  if (isErrorSave) {
+    return <p>Error saving presentation</p>
+  }
 
   return (
     <>

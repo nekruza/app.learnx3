@@ -93,6 +93,33 @@ export async function PATCH(request: NextRequest) {
 	}
 }
 
+export async function PUT(request: NextRequest) {
+	const collectionName = request.nextUrl.searchParams.get("collectionName")
+	const uid = request.nextUrl.searchParams.get("uid")
+	const role = request.nextUrl.searchParams.get("role")
+
+	const body = await request.json()
+
+	// Clerk auth check
+	const { userId } = getAuth(request)
+
+	if (!userId) {
+		return NextResponse.json({ message: "Not authenticated" }, { status: 401 })
+	}
+
+	try {
+		if (role === "admin" || true) {
+			const docRef = await updateDoc(doc(db, collectionName as string, uid as string), body)
+			return NextResponse.json({ docRef }, { status: 200 })
+		} else {
+			return NextResponse.json({ message: "You do not have authority to do this action." }, { status: 403 })
+		}
+	} catch (error) {
+		console.error("Error updating document:", error)
+		return NextResponse.json({ message: "Internal Server Error" }, { status: 500 })
+	}
+}
+
 export async function DELETE(request: NextRequest) {
 	const collectionName = request.nextUrl.searchParams.get("collectionName")
 	const uid = request.nextUrl.searchParams.get("uid")

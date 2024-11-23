@@ -12,6 +12,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import SpinningCircles from "react-loading-icons/dist/esm/components/spinning-circles";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from "react-toastify";
+import { generatePDF } from "./ConverToPDF";
+import DownloadIcon from '@mui/icons-material/Download';
 
 interface SlideIconButtonsProps {
   fullscreenSlide: number | null;
@@ -36,6 +38,7 @@ export function SlideIconButtons({
   const { apiRequest } = ApiServices()
   const id = params.id
 
+  // Save Presentation
   const {
     mutate: savePresentation,
     isLoading: isLoadingSave,
@@ -47,10 +50,10 @@ export function SlideIconButtons({
     }
   )
 
+  // Notify
   const notify = () => toast.success("Presentation successfully edited!");
 
-
-
+  // Toggle Editing
   const toggleEditing = () => {
     const params = new URLSearchParams(searchParams.toString());
     if (isEditing) {
@@ -63,6 +66,11 @@ export function SlideIconButtons({
     router.push(`?${params.toString()}`);
   };
 
+  // Cancel Editing
+  const cancelEditing = () => {
+    router.push(`?${params.toString()}`);
+  }
+
   if (isLoadingSave) {
     return <SpinningCircles />
   }
@@ -72,29 +80,13 @@ export function SlideIconButtons({
   }
 
   return (
-    <>
-      {fullscreenSlide === null && (
-        <IconButton
-          onClick={() => setFullscreenSlide(index)}
-          sx={{
-            position: 'absolute',
-            right: 10,
-            top: 10,
-            color: 'rgba(0, 0, 0, 0.6)',
-          }}
-        >
-          <FullscreenIcon />
-        </IconButton>
-      )}
+    <Box sx={{ position: 'absolute', right: fullscreenSlide === null ? 10 : 60, top: 10, width: 'fit-content' }}>
       {isAdminOrTeacher(userInfo) && (
         isEditing ? (
           <>
             <IconButton
               onClick={toggleEditing}
               sx={{
-                position: 'absolute',
-                right: 80,
-                top: 10,
                 color: 'rgba(0, 0, 0, 0.6)',
               }}
             >
@@ -102,12 +94,9 @@ export function SlideIconButtons({
             </IconButton>
             <IconButton
               onClick={() => {
-                toggleEditing()
+                cancelEditing()
               }}
               sx={{
-                position: 'absolute',
-                right: 50,
-                top: 10,
                 color: 'rgba(0, 0, 0, 0.6)',
               }}
             >
@@ -118,9 +107,6 @@ export function SlideIconButtons({
           <IconButton
             onClick={toggleEditing}
             sx={{
-              position: 'absolute',
-              right: 50,
-              top: 10,
               color: 'rgba(0, 0, 0, 0.6)',
             }}
           >
@@ -128,6 +114,26 @@ export function SlideIconButtons({
           </IconButton>
         )
       )}
-    </>
+
+      {fullscreenSlide === null ? (
+        <IconButton
+          onClick={() => setFullscreenSlide(index)}
+          sx={{
+            color: 'rgba(0, 0, 0, 0.6)',
+          }}
+        >
+          <FullscreenIcon />
+        </IconButton>
+      ) : (
+        <IconButton
+          onClick={() => generatePDF("presentation-container")}
+          sx={{
+            color: 'rgba(0, 0, 0, 0.6)',
+          }}
+        >
+          <DownloadIcon sx={{ fontSize: 27 }} />
+        </IconButton>
+      )}
+    </Box>
   );
 } 

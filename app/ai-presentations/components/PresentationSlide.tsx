@@ -39,7 +39,7 @@ export default function PresentationSlide({ path = [], index, setFullscreenSlide
   const imageTwo = "/ai-ppt-images/ai-ppt-teacher-teaching.webp"
 
   return (
-    <SlideCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}
+    <SlideCard className="slide" sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}
     }>
       <SlideIconButtons fullscreenSlide={fullscreenSlide} index={index} setFullscreenSlide={setFullscreenSlide} />
       <CardContent sx={{

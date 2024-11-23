@@ -53,7 +53,7 @@ const Presentation = ({ params }: { params: { id: string } }) => {
   if (isError) return <ErrorPage />
 
   return (
-    <Box sx={{ padding: 4, display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 4, height: '100vh', overflowY: 'auto', backgroundColor: "#eeeeff", borderRadius: 2, mt: -1 }}>
+    <Box id="presentation-container" sx={{ padding: 4, display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 4, height: '100vh', overflowY: 'auto', backgroundColor: "#eeeeff", borderRadius: 2, mt: -1 }}>
 
       {/* Slide 1 */}
       <SlideOne title={presentationContent?.topic} setFullscreenSlide={setFullscreenSlide} fullscreenSlide={fullscreenSlide} path={["topic"]} />

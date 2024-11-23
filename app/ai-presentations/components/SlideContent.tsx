@@ -17,31 +17,6 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
 }));
 
 
-const BaseCard = styled(Card)({
-  marginTop: 2,
-  backgroundImage: 'url(/ai-ppt-images/ai-ppt-bg.png)',
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center',
-  backgroundSize: 'cover',
-  width: '100%',
-  minHeight: "600px",
-  maxHeight: "700px",
-  maxWidth: '1000px',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  alignItems: 'center',
-  borderRadius: '10px',
-  position: 'relative',
-});
-
-const BaseBox = styled(Box)({
-  padding: 4,
-  background: "#432b85",
-  width: '90%',
-  height: '80%',
-  display: 'flex',
-});
 
 const ClassSignature = () => (
   <Typography variant="h6" paragraph color="white">Teacher {useStoreUser()?.userInfo?.name || "Anonymous"}'s class</Typography>
@@ -121,9 +96,9 @@ export const SlideOne = ({ title, setFullscreenSlide, fullscreenSlide, totalSlid
   path: string[],
 }) => {
   return (
-    <BaseCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}}>
+    <Card className="slide" sx={fullscreenSlide !== null ? { ...CardStyle, width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : { ...CardStyle }}>
       <SlideIconButtons fullscreenSlide={fullscreenSlide} index={0} setFullscreenSlide={setFullscreenSlide} />
-      <BaseBox sx={{ justifyContent: 'space-between' }}>
+      <Box sx={{ ...BaseBoxStyle, justifyContent: 'space-between' }}>
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -137,7 +112,7 @@ export const SlideOne = ({ title, setFullscreenSlide, fullscreenSlide, totalSlid
           <ClassSignature />
         </Box>
         <SlideImage currentImage={"/ai-ppt-images/ai-ppt-page-1.png"} />
-      </BaseBox>
+      </Box>
 
       <NavigationButtons
         currentSlide={0}
@@ -145,7 +120,7 @@ export const SlideOne = ({ title, setFullscreenSlide, fullscreenSlide, totalSlid
         totalSlides={totalSlidesCount || 0}
         setFullscreenSlide={setFullscreenSlide}
       />
-    </BaseCard>
+    </Card>
   );
 }
 
@@ -154,25 +129,48 @@ export const SlideLast = ({ setFullscreenSlide, fullscreenSlide, totalSlidesCoun
   fullscreenSlide: number | null,
   totalSlidesCount?: number,
 }) => (
-  <BaseCard sx={fullscreenSlide !== null ? { width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : {}}>
+  <Card className="slide" sx={fullscreenSlide !== null ? { ...CardStyle, width: '100%', height: '100%', maxWidth: '100vw', maxHeight: '100vh' } : { ...CardStyle }}>
     <SlideIconButtons fullscreenSlide={fullscreenSlide} index={totalSlidesCount || 0} setFullscreenSlide={setFullscreenSlide} />
-    <BaseBox sx={{
-      justifyContent: 'center',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: 1,
-    }}>
-      <Typography sx={{ fontSize: '4rem' }}>
+    <Box sx={{ ...BaseBoxStyle, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1, maxHeight: "500px", }}>
+      <Typography sx={{ fontSize: "4rem" }}>
         🎊
       </Typography>
-      <Typography variant="h2" fontWeight={600} color="#e5c643" mb={2}>Thank you!</Typography>
+      <Typography sx={{ fontSize: "4rem", fontWeight: 600, color: "#e5c643", mb: 2 }}>Thank you!</Typography>
       <ClassSignature />
-    </BaseBox>
+    </Box>
     <NavigationButtons
       display={fullscreenSlide !== null}
       currentSlide={(totalSlidesCount || 1) - 1}
       totalSlides={(totalSlidesCount || 1)}
       setFullscreenSlide={setFullscreenSlide}
     />
-  </BaseCard>
+  </Card >
 );
+
+
+const CardStyle = {
+  backgroundImage: 'url(/ai-ppt-images/ai-ppt-bg.png)',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  width: '100%',
+  minHeight: "600px",
+  maxHeight: "700px",
+  maxWidth: '1000px',
+  display: 'flex',
+  justifyContent: 'center',
+  flexDirection: 'column',
+  alignItems: 'center',
+  borderRadius: '10px',
+  position: 'relative',
+}
+
+
+const BaseBoxStyle = {
+  padding: 4,
+  background: "#432b85",
+  width: '90%',
+  height: '80%',
+  display: 'flex',
+  margin: 'auto',
+}

@@ -11,12 +11,14 @@ const CustomCard = React.memo(
 		image,
 		category,
 		createdById,
+		textStyle
 	}: {
 		title: string
 		link: string
 		image: string
 		category: string
 		createdById: string
+		textStyle?: React.CSSProperties
 	}) => {
 		const { userInfo } = useStoreUser()
 
@@ -72,12 +74,12 @@ const CustomCard = React.memo(
 							width: "100%",
 						}}
 					>
-						<Typography noWrap sx={{ fontSize: "14px", fontWeight: "bold", maxWidth: "90%" }}>
-							{capitalize(title)}
+						<Typography sx={{ height: 26, fontSize: "14px", fontWeight: "bold", maxWidth: "90%", ...textStyle }}>
+							{capitalize(title || "").slice(0, 30) + (title?.length > 30 ? "..." : "")}
 						</Typography>
-						<Typography noWrap sx={{ fontSize: "12px", fontWeight: "semibold", maxWidth: "90%" }}>
+						{category && <Typography noWrap sx={{ fontSize: "12px", fontWeight: "semibold", maxWidth: "90%", mt: 1 }}>
 							#{category}
-						</Typography>
+						</Typography>}
 					</Box>
 				</Card>
 			</Link>

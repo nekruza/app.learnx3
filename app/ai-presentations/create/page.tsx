@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { Box, Button, Grid, Input, Typography, Divider } from '@mui/material';
 import OpenAiFina from '@/components/utils/OpenAiFina';
-import presentationSchema from './utils/presentationSchema.json';
-import presentationContent from './utils/presentationContent.json';
-import { PresentationContent } from './utils/type';
+import presentationSchema from '../utils/presentationSchema.json';
+import presentationContent from '../utils/presentationContent.json';
+import { PresentationContent } from '../utils/type';
 import { usePresentationStore, useStoreUser } from '@/components/zustand';
 import { useRouter } from 'next/navigation';
 import { brandColors } from '@/components/utils/brandColors';

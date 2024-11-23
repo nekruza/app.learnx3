@@ -27,9 +27,18 @@ export interface Slide {
   title: string;
   subtitle: string;
   content: SlideContent;
+  image: string;
+}
+
+export interface Content {
+  topic: string;
+  content: Slide[];
 }
 
 export interface PresentationContent {
-  topic: string;
-  slides: Slide[];
+  content: Content;
+  createdAt: string;
+  createdById: string;
+  createdByName: string;
+  uid: string;
 }

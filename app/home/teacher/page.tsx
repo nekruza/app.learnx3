@@ -8,6 +8,7 @@ import DashboardLessonTimetableMobile from "@/components/dashboard/DashboardLess
 import Statistics from "@/components/Statistics"
 import StudentCardList from "@/components/student/StudentCardList"
 import DashboardAvatar from "@/components/dashboard/DashboardAvatar"
+import PresentationMainCard from "@/ai-presentations/components/PresentationMainCard"
 
 function TeacherDashboard() {
 	return (
@@ -19,7 +20,7 @@ function TeacherDashboard() {
 						<DashboardLessonTimetableMobile />
 					</Grid>
 					<Grid item xs={12} md={6}>
-						<DashboardAvatar />
+						<PresentationMainCard />
 					</Grid>
 					<Grid item xs={12}>
 						<Statistics displayGraphs={false} />

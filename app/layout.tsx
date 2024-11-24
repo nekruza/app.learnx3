@@ -1,19 +1,27 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { CssBaseline } from "@mui/material"
 import "./globals.css"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { ClerkProvider, SignedOut, SignedIn, RedirectToSignIn } from "@clerk/nextjs"
 import Script from "next/script"
-import { HotJar } from "./components/utils/Hotjar"
 import Head from "next/head"
+import Clarity from '@microsoft/clarity';
+
 
 export default function RootLayout({ children }: any) {
 	const [queryClient] = React.useState(() => new QueryClient())
 
 	const clerkPubKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 	const analyticsCode = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS
+	const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID
+
+	useEffect(() => {
+		if (clarityProjectId && process.env.NEXT_PUBLIC_NODE_ENV === "production") {
+			Clarity.init(clarityProjectId)
+		}
+	}, [clarityProjectId])
 
 	return (
 		<html lang="en">
@@ -28,7 +36,6 @@ export default function RootLayout({ children }: any) {
                     gtag('config', "${analyticsCode}");
           `}
 				</Script>
-				<HotJar />
 				<QueryClientProvider client={queryClient}>
 					<CssBaseline />
 					{/* <Hydrate state={children.dehydratedState}> */}

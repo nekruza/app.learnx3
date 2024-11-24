@@ -34,7 +34,9 @@ const PresentationList = () => {
 
   return (
 
-    <Box sx={{ gap: 4, height: "100%", }}>
+    <Box
+      //@ts-ignore
+      sx={{ gap: 4, height: "100%", }}>
       <PresentationMainCard />
 
       <Grid container spacing={2} sx={{ pb: 4, mt: 2 }}>

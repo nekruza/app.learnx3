@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.10.5",
     "@firebase/storage": "^0.11.2",
     "@google-cloud/text-to-speech": "^4.2.3",
+    "@microsoft/clarity": "^1.0.0",
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.17",
     "@mui/x-date-pickers": "^6.12.0",

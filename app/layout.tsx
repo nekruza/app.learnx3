@@ -19,7 +19,7 @@ export default function RootLayout({ children }: any) {
 	const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID
 
 	useEffect(() => {
-		if (clarityProjectId) {
+		if (clarityProjectId && process.env.NEXT_PUBLIC_NODE_ENV === "production") {
 			Clarity.init(clarityProjectId)
 		}
 	}, [clarityProjectId])

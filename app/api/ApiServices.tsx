@@ -63,11 +63,10 @@ function ApiServices() {
 		const updatedBody =
 			method === "POST"
 				? {
-					...body,
-					createdAt: `${new Date().toISOString()}`,
-					createdById: `${userInfo.uid}`,
-					createdByName: `${userInfo.name}`,
-				}
+						...body,
+						createdById: `${userInfo.uid}`,
+						createdByName: `${userInfo.name}`,
+				  }
 				: body
 		return await axios({
 			method,

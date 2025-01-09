@@ -207,7 +207,6 @@ function Lesson({ params }: { params: { id: string } }) {
 											fontSize: "13px",
 											fontWeight: 500,
 											width: "100%",
-
 										}}
 									>
 										<Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
@@ -235,9 +234,7 @@ function Lesson({ params }: { params: { id: string } }) {
 											rel="noreferrer"
 											style={{ width: isAdminOrTeacher(userInfo) ? "max-content" : "100%" }}
 											href={
-												lessonTimetableList?.data?.lesson_type === "general_english"
-													? lessonTimetableList?.data.video_call_link
-													: "https://meet.google.com/fee-kuoc-brp?authuser=2"
+												lessonTimetableList?.data.video_call_link || "https://meet.google.com/fee-kuoc-brp?authuser=2"
 											}
 										>
 											<Button

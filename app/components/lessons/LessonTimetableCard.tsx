@@ -63,7 +63,7 @@ const LessonTimetableCard = memo(({ lesson }: { lesson: LessonTimetableType }) =
 					</Box>
 					<ChipX
 						color={"black"}
-						text={capitalize(lesson?.lesson_type.split("_").join(" "))}
+						text={capitalize(lesson?.lesson_type?.split("_").join(" "))}
 						style={{
 							background: lesson?.lesson_type === "speaking_club" ? brandColors.lightPurple : "#0e9ade",
 							fontWeight: 600,
@@ -137,7 +137,7 @@ const LessonTimetableCard = memo(({ lesson }: { lesson: LessonTimetableType }) =
 						<Box sx={{ display: "flex", alignItems: "center", mb: "5px" }}>
 							<EventIcon sx={{ mr: 1, height: 20 }} />
 							<Typography sx={{ fontSize: "inherit", fontWeight: "inherit" }}>
-								{(formatMonthDay(lesson.lesson_date))}
+								{formatMonthDay(lesson.lesson_date)}
 							</Typography>
 						</Box>
 						<Box sx={{ display: "flex", alignItems: "center", mb: "5px" }}>

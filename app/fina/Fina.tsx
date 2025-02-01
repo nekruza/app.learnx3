@@ -1,33 +1,34 @@
 "use client"
+
 import { createRef, useEffect, useState } from "react"
-import { auth } from "@/components/firebaseX"
-import { styled, alpha, useTheme } from "@mui/material/styles"
-import { Avatar, Box, Button, Grid, IconButton, Typography, useMediaQuery } from "@mui/material"
-import SendIcon from "@mui/icons-material/Send"
-import InputBase from "@mui/material/InputBase"
+import { auth, generativeModel } from "@/components/firebaseX"
+import { useTheme } from "@mui/material/styles"
+import { Box, Grid, IconButton, Typography, useMediaQuery } from "@mui/material"
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight"
 import dayjs from "dayjs"
-import TextToSpeechButton from "@/components/speakpage/TextToSpeechButton"
 import { useStoreUser } from "@/components/zustand"
 import DeleteIcon from "@mui/icons-material/Delete"
-import OpenAiFina from "@/components/utils/OpenAiFina"
 import { brandColors } from "@/components/utils/brandColors"
+import { FinaInput } from "./FinaInput"
+import { InitialAIMessage } from "./InitialAIMessage"
+import { AIMessage } from "./AIMessage"
+import { MessageBubble } from "./MessageBubble"
+import { UserMessage } from "./UserMessage"
 
 interface Message {
-	role: "assistant" | "user" | "system"
-	content: string
+	role: "model" | "user" | "system"
+	parts: { text: string }[]
 	order?: number
 }
+
 export default function Fina({ handleClose }: { handleClose: () => void }) {
 	const theme = useTheme()
 	const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 	const { userInfo } = useStoreUser()
-	const [prompt, setPrompt] = useState("")
-	const now = dayjs().format("MMM D, YYYY")
 	const [messages, setMessages] = useState<Message[]>([
 		{
-			role: "assistant",
-			content: ` Hi ${auth.currentUser?.displayName}! I am your AI tutor. How can I help you? 🙂`,
+			role: "model",
+			parts: [{ text: `Hi ${auth.currentUser?.displayName}! I am your AI tutor. How can I help you? 🙂` }],
 			order: 1,
 		},
 	])
@@ -38,48 +39,97 @@ export default function Fina({ handleClose }: { handleClose: () => void }) {
 			...prevMessages,
 			{
 				role: incomingMessage.role,
-				content: incomingMessage.content,
+				parts: incomingMessage.parts,
 				order: prevMessages.length + 1,
 			},
 		])
-		setPrompt("")
 	}
 
 	// delete all messages
 	const handleDelete = () => {
 		setMessages([
 			{
-				role: "assistant",
-				content: ` Hi ${auth.currentUser?.displayName || ""}! I am your AI tutor. How can I help you? 🙂`,
+				role: "model",
+				parts: [{ text: `Hi ${auth.currentUser?.displayName || ""}! I am your AI tutor. How can I help you? 🙂` }],
 				order: 1,
 			},
 		])
 	}
 
 	const [loading, setLoading] = useState(false)
-	const combinedMessages = [...GPTMessage, ...messages, { role: "user", content: prompt }]
+	const [chat, setChat] = useState<any>(null)
 
-	const messagesArray: Message[] = combinedMessages.map(({ order, ...rest }: Message & any) => rest) || []
+	useEffect(() => {
+		// Initialize chat when component mounts
+		const initChat = async () => {
+			try {
+				const chatInstance = await generativeModel.startChat({
+					history: InitialAIMessage,
+					generationConfig: {
+						maxOutputTokens: 200,
+					},
+				})
+				setChat(chatInstance)
+			} catch (error) {
+				console.error("Error initializing chat:", error)
+			}
+		}
+		initChat()
+	}, [])
 
-	const handleClick = async (prompt: string) => {
-		handleMessage({ role: "user", content: prompt })
-		setLoading(true)
-		try {
-			const response = await OpenAiFina({
-				model: "gpt-4o-mini",
-				messages: messagesArray,
-				temperature: 0.9,
-				max_tokens: 200,
-				presence_penalty: 0,
-			})
+	const handleClick = async (text: string) => {
+		if (!chat) {
+			// Add a user-friendly error message
 			handleMessage({
-				role: "assistant",
-				content: response.choices[0].message.content || "Sorry, something went wrong. Please try again later.",
+				role: "model",
+				parts: [{ text: "I'm still getting ready. Please try again in a moment." }],
 			})
+			return
+		}
 
-			setLoading(false)
+		// (Optional) Set up a flag to avoid state updates if the component unmounts.
+		// You can replace this with useRef and cleanup in a useEffect.
+		let isComponentMounted = true
+
+		// Add user message
+		handleMessage({ role: "user", parts: [{ text: text }] })
+		setLoading(true)
+
+		try {
+			// Request response with streaming enabled
+			const result = await chat.sendMessageStream(text)
+
+			// If a native stream exists, process it with a for-await-of loop.
+			handleMessage({ role: "model", parts: [{ text: "" }] })
+			let streamingText = ""
+			let lastUpdateTime = Date.now()
+			for await (const chunk of result.stream) {
+				// The chunk might be a string already or require extracting its text.
+				const chunkText = typeof chunk === "string" ? chunk : await chunk.text()
+				if (!chunkText) continue
+				streamingText += chunkText
+
+				const now = Date.now()
+				if (now - lastUpdateTime > 100 && isComponentMounted) {
+					setMessages((prevMessages) => {
+						const newMessages = [...prevMessages]
+						newMessages[newMessages.length - 1].parts[0].text = streamingText
+						return newMessages
+					})
+					lastUpdateTime = now
+				}
+			}
+			if (isComponentMounted) {
+				// Final update once streaming is complete.
+				setMessages((prevMessages) => {
+					const newMessages = [...prevMessages]
+					newMessages[newMessages.length - 1].parts[0].text = streamingText
+					return newMessages
+				})
+				setLoading(false)
+			}
 		} catch (error) {
-			console.error(error)
+			console.error("Error while streaming:", error)
 			setLoading(false)
 		}
 	}
@@ -121,13 +171,12 @@ export default function Fina({ handleClose }: { handleClose: () => void }) {
 					padding: "20px 10px 0px",
 				}}
 			>
-				<IconButton
-					sx={{ color: brandColors.iconGrey }}
-					onClick={handleClose}
-				>
+				<IconButton sx={{ color: brandColors.iconGrey }} onClick={handleClose}>
 					<KeyboardDoubleArrowRightIcon />
 				</IconButton>
-				<Typography sx={{ width: "100%", textAlign: "center", color: brandColors.iconGrey }}>{now}</Typography>
+				<Typography sx={{ width: "100%", textAlign: "center", color: brandColors.iconGrey }}>
+					{dayjs().format("MMM D, YYYY")}
+				</Typography>
 				<IconButton sx={{ color: brandColors.iconGrey }} onClick={handleDelete}>
 					<DeleteIcon />
 				</IconButton>
@@ -137,7 +186,6 @@ export default function Fina({ handleClose }: { handleClose: () => void }) {
 					{messages?.map((item, index) => (
 						<Grid item xs={12} key={index}>
 							<Box
-								key={index}
 								sx={{
 									display: "flex",
 									width: "100%",
@@ -145,184 +193,20 @@ export default function Fina({ handleClose }: { handleClose: () => void }) {
 									justifyContent: (item.order && (item.order % 2 ? "start" : "end")) || "start",
 								}}
 							>
-								<Box
-									sx={{
-										display: "flex",
-										width: "fit-content ",
-										m: "5px 10px",
-										padding: "5px 10px",
-										height: "fit-content",
-										alignItems: "center",
-										borderRadius: 2,
-										maxWidth: "80%",
-										background: "white",
-										boxShadow: "rgb(50 50 93 / 5%) 0px 2px 5px -1px, rgb(0 0 0 / 20%) 0px 1px 3px -1px",
-									}}
-								>
+								<MessageBubble>
 									{item.order && item.order % 2 ? (
-										<Box sx={{ display: "flex", alignItems: "center" }}>
-											<Avatar
-												sx={{ width: 35, height: 35, mr: 2, border: "2px solid #5f61c4" }}
-												alt="professor"
-												src="/teacher-johny.png"
-											/>
-											<p
-												style={{ fontSize: 14, color: "#323331" }}
-												dangerouslySetInnerHTML={{
-													__html: item.content.replace(/\n/g, "<br />"),
-												}}
-											/>
-											<TextToSpeechButton text={item.content} buttonSize="25px" personType="female" />
-										</Box>
+										<AIMessage text={item.parts[0].text} />
 									) : (
-										<Box sx={{ display: "flex", alignItems: "center" }}>
-											<TextToSpeechButton text={item.content} buttonSize="25px" personType="male" />
-											<Typography sx={{ fontSize: 14, color: "#323331" }}> {item.content} </Typography>
-											<Avatar
-												sx={{ width: 30, height: 30, ml: 2, border: "2px solid #5f61c4" }}
-												alt="professor"
-												src={userInfo?.gender === "male" ? "/pupil-avatar.png" : "/school-girl.svg"}
-											/>
-										</Box>
+										<UserMessage text={item.parts[0].text} userGender={userInfo?.gender} />
 									)}
-								</Box>
-								{/* <TextToSpeechButton
-									text={item.order % 2 ? item.content : item.content}
-									buttonSize="25px"
-									personType={item.order % 2 ? "female" : "male"}
-								/> */}
+								</MessageBubble>
 							</Box>
 						</Grid>
 					))}
 				</Grid>{" "}
 			</Box>
 
-			<BotFinaAI prompt={prompt} loading={loading} handleClick={handleClick} setPrompt={setPrompt} />
+			<FinaInput loading={loading} handleClick={handleClick} />
 		</Box>
 	)
 }
-
-const BotFinaAI = ({
-	loading,
-	prompt,
-	handleClick,
-	setPrompt,
-}: {
-	loading: boolean
-	prompt: string
-	handleClick: (text: string) => void
-	setPrompt: React.Dispatch<React.SetStateAction<string>>
-}) => {
-	return (
-		<Box
-			sx={{
-				display: "flex",
-				flexDirection: "row",
-				paddingTop: "12px",
-				marginTop: 1,
-				marginBottom: { xs: "130px", sm: "10px" },
-				paddingLeft: { xs: "15px", sm: 0 },
-				width: "100%",
-			}}
-		>
-			<Search>
-				<SearchIconWrapper>🤖</SearchIconWrapper>
-				<StyledInputBase
-					autoFocus
-					placeholder="Ask your question here..."
-					inputProps={{ "aria-label": "search" }}
-					value={prompt}
-					onChange={(e) => setPrompt(e.target.value)}
-					onKeyPress={(e) => e.key === "Enter" && prompt?.length > 0 && handleClick(prompt)}
-				/>
-			</Search>
-			<Button
-				variant="contained"
-				onClick={() => {
-					handleClick(prompt)
-				}}
-				disabled={loading || prompt === ""}
-				sx={{
-					width: "100px",
-					mr: "20px",
-					textTransform: "none",
-					background: "#5f61c4",
-					color: "white !important",
-					fontWeight: "600",
-					padding: "3px 10px",
-					"&:hover": { background: "#424493" },
-				}}
-			>
-				<SendIcon style={{ marginRight: 10, width: 20 }} /> {loading ? "Loading..." : "Send"}
-			</Button>
-		</Box>
-	)
-}
-
-const Search = styled("div")(({ theme }) => ({
-	position: "relative",
-	borderRadius: theme.shape.borderRadius,
-	backgroundColor: alpha(theme.palette.common.white, 0.15),
-	"&:hover": {
-		backgroundColor: alpha(theme.palette.common.white, 0.25),
-	},
-	marginRight: theme.spacing(2),
-	marginLeft: 0,
-	width: "100%",
-	flexGrow: 1,
-	[theme.breakpoints.up("sm")]: {
-		marginLeft: theme.spacing(3),
-		width: "auto",
-	},
-}))
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-	padding: theme.spacing(0, 2),
-	height: "100%",
-	position: "absolute",
-	pointerEvents: "none",
-	display: "flex",
-	alignItems: "center",
-	justifyContent: "center",
-}))
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-	color: "inherit",
-	"& .MuiInputBase-input": {
-		padding: theme.spacing(1, 1, 1, 0),
-		paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-		transition: theme.transitions.create("width"),
-		width: "100%",
-		[theme.breakpoints.up("md")]: {
-			width: { xs: "10ch", sm: "35ch" },
-		},
-	},
-}))
-
-const GPTMessage = [
-	{
-		role: "system",
-		content:
-			"You are english language teacher, you lead conversation and explain things in simple language so everyone can learn. Answers should be precise and short up to 100 token. You are a teacher, so you should be patient and kind. ",
-	},
-	{
-		role: "user",
-		content: "Good morning, teacher! How are you today?",
-	},
-	{
-		role: "assistant",
-		content: "Good morning! I'm doing well, thank you. How about you? How was your evening?",
-	},
-	{
-		role: "user",
-		content: "I'm doing great, thank you for asking. My evening was good. I spent some time doing my homework.",
-	},
-	{
-		role: "assistant",
-		content: "That's good to hear! I hope you didn't find the homework too challenging.",
-	},
-	{
-		role: "user",
-		content: "No, it was manageable. If I had any questions, I would have asked you in class.",
-	},
-]

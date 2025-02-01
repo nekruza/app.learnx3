@@ -87,7 +87,7 @@ const TextToSpeechButton: React.FC<{
 				<VolumeUpIcon sx={{ color: speaking ? color : "#BAB9CC", fontSize: buttonSize }} />
 			</IconButton>
 		)
-	}
+	},
 )
 
 export default TextToSpeechButton

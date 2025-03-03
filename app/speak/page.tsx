@@ -1,5 +1,5 @@
 "use client"
-import React, { useMemo } from "react"
+import React, { useMemo, useDeferredValue } from "react"
 import ProtectedRoute from "@/components/auth/ProtectedRoute"
 import SidebarContainer from "@/components/SidebarContainer"
 import { Box, Grid, Typography } from "@mui/material"
@@ -14,6 +14,8 @@ import CustomCard from "@/components/other/CustomCard"
 
 function index() {
 	const [category, setCategory] = React.useState("All")
+	const [search, setSearch] = React.useState("")
+	const deferredSearch = useDeferredValue(search)
 	const { apiRequest, fetchAiImages } = ApiServices()
 
 	const { data: topicImages } = useQuery({
@@ -38,8 +40,17 @@ function index() {
 				?.sort((a: TopicType, b: TopicType) => a.category?.localeCompare(b.category))
 				?.map(({ category }: { category: string }) => category)
 				?.filter((value: string, index: number, self: string) => self.indexOf(value) === index),
-		[topics?.data]
+		[topics?.data],
 	)
+
+	const filteredTopics = useMemo(() => {
+		if (!topics?.data) return []
+
+		return topics.data
+			.filter((x: TopicType) => x.topic.toLowerCase().includes(deferredSearch.toLowerCase()))
+			.sort((a: TopicType, b: TopicType) => dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix())
+			.filter((x: TopicType) => (category === "All" ? true : x.category === category))
+	}, [topics?.data, deferredSearch, category])
 
 	if (isError) return <ErrorPage />
 
@@ -76,25 +87,43 @@ function index() {
 								</Typography>
 							))}
 						</Box>
+						<Box sx={{ width: "100%", display: "flex", mb: 2, overflow: "scroll", maxWidth: "1295px" }}>
+							<input
+								title="Search"
+								type="text"
+								placeholder="Search"
+								value={search}
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+									setSearch(e.target.value)
+								}}
+								style={{
+									width: "100%",
+									padding: "10px 15px",
+									borderRadius: "8px",
+									border: "1px solid #e0e0e0",
+									fontSize: "16px",
+									outline: "none",
+									transition: "all 0.3s ease",
+									boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+								}}
+							/>
+						</Box>
 						<Grid container spacing={2}>
-							{topics?.data
-								.sort((a: TopicType, b: TopicType) => dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix())
-								.filter((x: TopicType) => (category === "All" ? x : x.category === category))
-								.map((x: TopicType) => {
-									const imageX = topicImages?.data.find(({ name }: { name: string }) => name === x?.imagePath)
+							{filteredTopics.map((x: TopicType) => {
+								const imageX = topicImages?.data.find(({ name }: { name: string }) => name === x?.imagePath)
 
-									return (
-										<Grid item xs={6} sm={3} lg={2}>
-											<CustomCard
-												title={x.topic}
-												link={`/speak/${x.lessonId}`}
-												image={imageX?.url}
-												category={x.category}
-												createdById={x.createdById}
-											/>
-										</Grid>
-									)
-								})}
+								return (
+									<Grid item xs={6} sm={3} lg={2} key={x.lessonId}>
+										<CustomCard
+											title={x.topic}
+											link={`/speak/${x.lessonId}`}
+											image={imageX?.url}
+											category={x.category}
+											createdById={x.createdById}
+										/>
+									</Grid>
+								)
+							})}
 						</Grid>
 					</Box>
 				)}

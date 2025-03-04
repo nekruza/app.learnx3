@@ -35,8 +35,8 @@ function Lesson({ params }: { params: { id: string } }) {
 	// Fetch lessons
 	const {
 		data: lessonTimetableList,
-		isLoading: cIsLoading,
-		isError: cIsError,
+		isLoading: lessonTimetableIsLoading,
+		isError: lessonTimetableIsError,
 	} = useQuery({
 		queryKey: [`lessonTimetableOneLesson-${id}`],
 		queryFn: () => apiRequest("GET", null, { collectionName: "lessonTimetable", uid: id as string }),
@@ -64,7 +64,7 @@ function Lesson({ params }: { params: { id: string } }) {
 		(students) => apiRequest("PATCH", students, { collectionName: "lessonTimetable", uid: id as string }),
 		{
 			onSuccess: () => queryClient.invalidateQueries([`lessonTimetableOneLesson-${id}`]),
-		}
+		},
 	)
 
 	// fetch student data
@@ -89,10 +89,10 @@ function Lesson({ params }: { params: { id: string } }) {
 
 	const studentJoined = useMemo(
 		() => lessonTimetableList?.data?.students?.includes(userInfo?.uid) || false,
-		[lessonTimetableList?.data?.students, userInfo?.uid]
+		[lessonTimetableList?.data?.students, userInfo?.uid],
 	)
 
-	if (cIsError || isError) return <ErrorPage />
+	if (lessonTimetableIsError || isError) return <ErrorPage />
 
 	return (
 		<ProtectedRoute permitArray={["admin", "teacher", "student"]}>
